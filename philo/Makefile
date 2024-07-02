@@ -6,7 +6,7 @@
 #    By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/01 15:18:01 by simarcha          #+#    #+#              #
-#    Updated: 2024/07/01 16:09:06 by simarcha         ###   ########.fr        #
+#    Updated: 2024/07/02 17:12:43 by simarcha         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,9 @@ INC					= $(addprefix $(INC_DIR), $(INC_FILES))
 
 #SRCS Files - All files that I need for this project
 SRCS_DIR			= ./srcs/
-SRCS_FILES			= main.c
+SRCS_FILES			= main.c \
+					utils_functions.c \
+					parsing.c
 SRCS				= $(addprefix $(SRCS_DIR), $(SRCS_FILES))
 
 #OBJ Files - All .c files transformed in .o files
@@ -33,10 +35,10 @@ OBJ					= $(patsubst $(SRCS_DIR)%.c, $(OBJ_DIR)%.o, $(SRCS))
 #RULES AND COMMANDS - All the rules that we need to create this project
 all:				$(NAME)
 
-$(obj_repo):
+$(OBJ_DIR):
 					mkdir -p $(OBJ_DIR)
 
-$(OBJ_DIR)%.o:		$(SRCS_DIR)%.c Makefile $(INC) $(obj_repo)
+$(OBJ_DIR)%.o:		$(SRCS_DIR)%.c Makefile $(INC) $(OBJ_DIR)
 					$(CC) $(CFLAGS) -c $< -o $@
 
 $(NAME):			Makefile $(INC) $(OBJ)

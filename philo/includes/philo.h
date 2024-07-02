@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 11:59:17 by simarcha          #+#    #+#             */
-/*   Updated: 2024/07/02 17:15:14 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/07/02 19:22:15 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,19 @@
 # include <sys/time.h>
 # include <pthread.h>
 
-//# define ERROR_MSG	"./philo number_of_philosophers time_to_die time_to_eat \
-time_to_sleep [number_of_times_each_philosopher_must_eat]"
+//# define ERROR_MSG	"./philo number_of_philosophers time_to_die time_to_eat
+//time_to_sleep [number_of_times_each_philosopher_must_eat]"
 //# define INT_MIN	-2147483648
 //# define INT_MAX	2147483647
+# define MALLOC_ERROR	3
 
-/*typedef struct philo
+typedef struct philo
 {
-	int		thread_id;
-}				t_philo;*/
+	int	nb_philo;
+	int	time_to_die;
+	int	time_to_eat;
+	int	time_to_sleep;
+}				t_philo;
 
 //utils_functions.c
 int		ft_isdigit(int c);

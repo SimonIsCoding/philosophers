@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 12:09:47 by simarcha          #+#    #+#             */
-/*   Updated: 2024/07/02 19:53:08 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/07/03 18:41:54 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,9 @@ int	main(void)
 {
 	pthread_t	thread_1;
 	pthread_t	thread_2;
+	pthread_t	th[nb_of_philo]
+	th[i]
+	i++
 
 	pthread_create(&thread_1, NULL, &increment_number, NULL);
 	pthread_create(&thread_2, NULL, &increment_number, NULL);
@@ -123,7 +126,11 @@ void	*my_function(void *arg)
 
 int main(void)
 {
-	pthread_t	th[2];//this is a array of 10 threads
+	pthread_t	th[nb_philo];//this is a array of 2 threads
+	int i = 0;
+	while (i < nb_philo)
+		thread_create(th[i], NULL, my_function, NULL)
+	
 	int			i;
 	int			*d;
 	int			*result;
@@ -167,20 +174,15 @@ int	philosophing(char **argv)
 	data->time_to_sleep = ft_atoi(argv[4]);
 	return (0);
 }
-/*
+
 int	main(int argc, char **argv)
 {
-	if (argc != 5 && argc != 6)
-		return (write(2, "Arguments ill written.\n", 24), 1);
-	else
-	{
-		if (check_error(argv) == 1)
-			return (2);
-		philosophing(argv);
-	}
+	if (check_error(argc, argv) == 1)
+		return (1);
+	philosophing(argv);
 	return (0);
-}*/
-
+}
+/*
 int	rate_time(void)
 {
 	int				requested_sleep_time;
@@ -202,4 +204,4 @@ int main(void)
 {
 	rate_time();
 	return (0);
-}
+}*/

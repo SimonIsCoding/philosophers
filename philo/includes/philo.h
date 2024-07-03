@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 11:59:17 by simarcha          #+#    #+#             */
-/*   Updated: 2024/07/02 19:22:15 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/07/03 18:45:40 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,13 @@
 # include <sys/time.h>
 # include <pthread.h>
 
-//# define ERROR_MSG	"./philo number_of_philosophers time_to_die time_to_eat
-//time_to_sleep [number_of_times_each_philosopher_must_eat]"
-//# define INT_MIN	-2147483648
-//# define INT_MAX	2147483647
 # define MALLOC_ERROR	3
+# define ERROR_MSG	"$>./philo number_of_philosophers time_to_die time_to_eat\
+ time_to_sleep [number_of_times_each_philosopher_must_eat]\n"
+
+//COLORS
+# define BOLD_RED "\033[1;31m"
+# define RESET	"\033[0m"
 
 typedef struct philo
 {
@@ -31,6 +33,7 @@ typedef struct philo
 	int	time_to_die;
 	int	time_to_eat;
 	int	time_to_sleep;
+	int	nb_must_eat;
 }				t_philo;
 
 //utils_functions.c
@@ -40,8 +43,6 @@ size_t	ft_strlen(const char *s);
 int		ft_atoi(const char *str);
 
 //parsing.c
-int		check_number_range(char *str_user, char *positive_lim,
-						char *negative_lim);
-int		check_error(char **argv);
+int		check_error(int argc, char **argv);
 
 #endif

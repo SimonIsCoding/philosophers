@@ -6,7 +6,7 @@
 #    By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/01 15:18:01 by simarcha          #+#    #+#              #
-#    Updated: 2024/07/02 17:12:43 by simarcha         ###   ########.fr        #
+#    Updated: 2024/07/03 18:13:16 by simarcha         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,8 @@ INC					= $(addprefix $(INC_DIR), $(INC_FILES))
 SRCS_DIR			= ./srcs/
 SRCS_FILES			= main.c \
 					utils_functions.c \
-					parsing.c
+					parsing.c \
+					custom_usleep.c
 SRCS				= $(addprefix $(SRCS_DIR), $(SRCS_FILES))
 
 #OBJ Files - All .c files transformed in .o files
@@ -38,7 +39,7 @@ all:				$(NAME)
 $(OBJ_DIR):
 					mkdir -p $(OBJ_DIR)
 
-$(OBJ_DIR)%.o:		$(SRCS_DIR)%.c Makefile $(INC) $(OBJ_DIR)
+$(OBJ_DIR)%.o:		$(SRCS_DIR)%.c Makefile $(INC) | $(OBJ_DIR)
 					$(CC) $(CFLAGS) -c $< -o $@
 
 $(NAME):			Makefile $(INC) $(OBJ)

@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 11:59:17 by simarcha          #+#    #+#             */
-/*   Updated: 2024/07/03 18:45:40 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/07/03 19:11:48 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@
 # include <pthread.h>
 
 # define MALLOC_ERROR	3
-# define ERROR_MSG	"$>./philo number_of_philosophers time_to_die time_to_eat\
- time_to_sleep [number_of_times_each_philosopher_must_eat]\n"
+# define ERROR_MSG		"$>./philo number_of_philosophers time_to_die\
+ time_to_eat time_to_sleep [number_of_times_each_philosopher_must_eat]\n"
 
 //COLORS
 # define BOLD_RED "\033[1;31m"
@@ -34,6 +34,7 @@ typedef struct philo
 	int	time_to_eat;
 	int	time_to_sleep;
 	int	nb_must_eat;
+	int	start_living;
 }				t_philo;
 
 //utils_functions.c

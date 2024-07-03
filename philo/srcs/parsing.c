@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 17:10:53 by simarcha          #+#    #+#             */
-/*   Updated: 2024/07/03 18:59:21 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/07/03 19:10:48 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ static void	display_error_message(void)
 	return ;
 }
 
+//This functions is use to know if the number input is in the integer range
+//If not, we send an error message
 static int	check_number_range(char *str_user, char *positive_lim,
 						char *negative_lim)
 {
@@ -54,6 +56,11 @@ static int	check_number_range(char *str_user, char *positive_lim,
 	return (1);
 }
 
+//This functions checks if the number is well written as a digit
+//It can start with '+' or '-' at the beginning
+//But the input should be positive
+//If the number is negative, we will send a message to tell the user to write
+//a positive number.
 static int	check_digit(char **argv, int i)
 {
 	int	j;
@@ -71,6 +78,9 @@ static int	check_digit(char **argv, int i)
 	return (0);
 }
 
+//This function is the last check.
+//Some number can be well written but they should be in the certain range
+//Like written in the display_message function.
 static int	is_number_not_good(char *argv, int i)
 {
 	int	check_nb;
@@ -97,6 +107,9 @@ static int	is_number_not_good(char *argv, int i)
 	return (0);
 }
 
+//This function is the parsing function
+//If this function returns 0, it means that all the inputs are well written
+//Then there is no error
 int	check_error(int argc, char **argv)
 {
 	int	i;

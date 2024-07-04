@@ -73,7 +73,7 @@ int main()
 #define BOLD_CYAN "\033[1;36m"
 #define RESET "\033[0m"
 
-int main()
+/*int main()
 {
     struct timeval start, end;
 	int	begin, fin;
@@ -93,7 +93,7 @@ int main()
     printf("Actual sleep duration: "BOLD_CYAN"\t\t%.2f milliseconds\n\n"RESET, elapsedMilliseconds);
 
     return 0;
-}
+}*/
 
 /*void	*thread_id(void *ptr)
 {
@@ -264,3 +264,63 @@ int main(void)
 	rate_time();
 	return (0);
 }*/
+
+long	get_elapsed_time_microseconds(struct timeval start,
+						struct timeval end)
+{
+	return ((end.tv_sec - start.tv_sec) * 1000000L
+		+ (end.tv_usec - start.tv_usec));
+}
+
+void	precise_usleep(long usec)
+{
+	struct timeval	start;
+	struct timeval	current;
+	long			elapsed;
+	long			rem;
+
+	gettimeofday(&start, NULL);
+	gettimeofday(&current, NULL);
+	elapsed = get_elapsed_time_microseconds(start, current);
+	rem = usec - elapsed;
+	if (rem > 1000)
+		usleep(rem / 2);
+	while (elapsed < usec)
+	{
+		gettimeofday(&current, NULL);
+		elapsed = get_elapsed_time_microseconds(start, current);
+		rem = usec - elapsed;
+		if (rem > 1000)
+			usleep(rem / 2);
+	}
+}
+
+int	main(void)
+{
+	struct timeval	start;
+	struct timeval	end;
+	long int		temps_ecoule_en_ms;
+
+	gettimeofday(&start, NULL);
+	printf("start.tv_sec = %li\n", start.tv_sec);
+	precise_usleep(5 * 100000);
+	gettimeofday(&end, NULL);
+	printf("end.tv_sec = %li\n", end.tv_sec);
+
+	long int	sec;
+	long int	usec;
+
+	sec = end.tv_sec - start.tv_sec;
+	usec = end.tv_usec - start.tv_usec;
+	long int temps_ecoule_en_us = (sec * 1000000) + (usec);
+	temps_ecoule_en_ms = (sec * 1000) + (usec / 1000);
+	long int temps_ecoule_en_sec = (sec) + (usec / 1000000);
+
+	printf("sec = %li\n", sec);
+	printf("usec = %li\n", usec);
+	printf("temps_ecoule_en_us = %li\n", temps_ecoule_en_us);
+	printf("temps_ecoule_en_ms = %li\n", temps_ecoule_en_ms);
+	printf("temps_ecoule_en_sec = %li\n\n", temps_ecoule_en_sec);
+
+	return (0);
+}

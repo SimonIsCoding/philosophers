@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 12:09:47 by simarcha          #+#    #+#             */
-/*   Updated: 2024/07/04 17:20:46 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/07/04 18:18:26 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ t_philo	*init_philo_struct(char **argv)
 	int				philo_nb;
 	t_philo			*philo;
 	struct timeval	start;
+	struct timeval	end;
+
 
 	philo_nb = ft_atoi(argv[1]);
 	philo = malloc(sizeof(t_philo) * philo_nb);
@@ -40,12 +42,17 @@ t_philo	*init_philo_struct(char **argv)
 		philo->nb_must_eat = ft_atoi(argv[5]);
 	else
 		philo->nb_must_eat = -1;
+
 	gettimeofday(&start, NULL);
-	philo->start_living = start;
-	//print_philo_parameter(philo);
+	printf("start.tv_usec = %li\n", start.tv_usec);
+	precise_usleep(2 * 1000000);
+	gettimeofday(&end, NULL);
+	printf("end.tv_usec = %li\n", end.tv_usec)
 	return (philo);
 }
 
+//philo->start_living = start;
+//print_philo_parameter(philo);
 void	*philo_routine(void *arg)
 {
 	arg = NULL;
@@ -77,8 +84,8 @@ int	init_threads(t_philo *philo)
 
 int	start_philosophing(t_philo *philo)
 {
-	if (philo->nb_philo == 1)
-		dying_state_for_one_philo(philo);
+//	if (philo->nb_philo == 1)
+//		dying_state_for_one_philo(philo);
 	if (philo->nb_philo % 2 == 0)
 	{
 		if (init_threads(philo) == -1)

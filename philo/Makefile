@@ -6,7 +6,7 @@
 #    By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/01 15:18:01 by simarcha          #+#    #+#              #
-#    Updated: 2024/07/03 18:13:16 by simarcha         ###   ########.fr        #
+#    Updated: 2024/07/04 12:36:20 by simarcha         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,8 @@ SRCS_DIR			= ./srcs/
 SRCS_FILES			= main.c \
 					utils_functions.c \
 					parsing.c \
-					custom_usleep.c
+					custom_usleep.c \
+					philo_states.c
 SRCS				= $(addprefix $(SRCS_DIR), $(SRCS_FILES))
 
 #OBJ Files - All .c files transformed in .o files

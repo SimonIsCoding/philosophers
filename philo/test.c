@@ -43,7 +43,8 @@ void* print_in_background(void* arg)
     return NULL;
 }
 
-int main() {
+int main()
+{
     pthread_t thread_id;
 
     // Create a new thread
@@ -75,10 +76,13 @@ int main() {
 int main()
 {
     struct timeval start, end;
+	int	begin, fin;
 
-    gettimeofday(&start, NULL); // Get the current time before sleeping
+    begin = gettimeofday(&start, NULL); // Get the current time before sleeping
+	printf("begin = %i\n", begin);
     usleep(500000);  // Expected sleep: 500 milliseconds (0.5 seconds)
-    gettimeofday(&end, NULL);  // Get the time after sleeping
+    fin = gettimeofday(&end, NULL);  // Get the time after sleeping
+	printf("fin = %i\n", fin);
 
     long seconds = end.tv_sec - start.tv_sec;
     long microseconds = end.tv_usec - start.tv_usec;
@@ -163,7 +167,7 @@ void* routine()
 
 int main(void)
 {
-    pthread_t p1;
+	pthread_t p1;
 	pthread_t p2;
 	pthread_t p3;
 
@@ -234,5 +238,29 @@ int main(void)
 		free(result);
 	}
 	printf("the total sum equals: %d\n", total);
+	return (0);
+}*/
+
+/*
+int	rate_time(void)
+{
+	int				requested_sleep_time;
+	int				actual_time;
+	struct timeval	start;
+	struct timeval	end;
+
+	requested_sleep_time = 2 * 1000000;
+	printf("requested_sleep_time = 2 seconds = 2 000 000 microseconds\n");
+	gettimeofday(&start, NULL);
+	usleep(requested_sleep_time);
+	gettimeofday(&end, NULL);
+	actual_time = (end.tv_sec - start.tv_sec) * 10000000 + (end.tv_usec - start.tv_usec);
+	printf("actual_time slept = %d\n", actual_time);
+	return (0);
+}
+
+int main(void)
+{
+	rate_time();
 	return (0);
 }*/

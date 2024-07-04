@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 11:59:17 by simarcha          #+#    #+#             */
-/*   Updated: 2024/07/03 19:11:48 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/07/04 18:05:18 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,21 +29,40 @@
 
 typedef struct philo
 {
-	int	nb_philo;
-	int	time_to_die;
-	int	time_to_eat;
-	int	time_to_sleep;
-	int	nb_must_eat;
-	int	start_living;
+	int				nb_philo;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	int				nb_must_eat;
+	struct timeval	start_living;
+	long int		timestamp_in_ms;
+	pthread_mutex_t	mutex;
+	//left_fork
+	//right_fork
+	//write_philo_state => use mutex if you use printf function
 }				t_philo;
 
+typedef struct mutex
+{
+	
+}				t_mutex;
+
+
 //utils_functions.c
-int		ft_isdigit(int c);
-int		ft_strcmp(const char *s1, const char *s2);
-size_t	ft_strlen(const char *s);
-int		ft_atoi(const char *str);
+int			ft_isdigit(int c);
+int			ft_strcmp(const char *s1, const char *s2);
+size_t		ft_strlen(const char *s);
+int			ft_atoi(const char *str);
 
 //parsing.c
 int		check_error(int argc, char **argv);
+
+//custom_usleep.c
+long	get_elapsed_time_microseconds(struct timeval start,
+						struct timeval end);
+void	precise_usleep(long usec);
+
+//philo_states.c
+void	dying_state_for_one_philo(t_philo *philo);
 
 #endif

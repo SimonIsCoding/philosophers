@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 11:59:17 by simarcha          #+#    #+#             */
-/*   Updated: 2024/07/05 12:17:09 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/07/05 14:33:13 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,16 @@
 
 typedef struct philo
 {
+	int				thread_id;
 	int				nb_philo;
 	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				nb_must_eat;
+	//int				fork_remaining;
 	struct timeval	start_living;
 	long			timestamp_in_ms;
-	pthread_mutex_t	mutex;
+//	t_mutex			mutex;
 	pthread_mutex_t	left_fork;
 	pthread_mutex_t	right_fork;
 	//write_philo_state => use mutex if you use printf function
@@ -44,7 +46,8 @@ typedef struct philo
 
 typedef struct mutex
 {
-	
+	pthread_mutex_t	left_fork;
+	pthread_mutex_t	right_fork;
 }				t_mutex;
 
 

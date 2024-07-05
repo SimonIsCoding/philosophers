@@ -303,7 +303,7 @@ int	main(void)
 
 	gettimeofday(&start, NULL);
 	printf("start.tv_sec = %li\n", start.tv_sec);
-	precise_usleep(5 * 100000);
+	precise_usleep(1 * 1000000);
 	gettimeofday(&end, NULL);
 	printf("end.tv_sec = %li\n", end.tv_sec);
 
@@ -312,9 +312,9 @@ int	main(void)
 
 	sec = end.tv_sec - start.tv_sec;
 	usec = end.tv_usec - start.tv_usec;
-	long int temps_ecoule_en_us = (sec * 1000000) + (usec);
-	temps_ecoule_en_ms = (sec * 1000) + (usec / 1000);
-	long int temps_ecoule_en_sec = (sec) + (usec / 1000000);
+	long int temps_ecoule_en_us = (sec * 1000000L) + (usec);
+	temps_ecoule_en_ms = (sec * 1000L) + (usec / 1000L);
+	long int temps_ecoule_en_sec = (sec) + (usec / 1000000L);
 
 	printf("sec = %li\n", sec);
 	printf("usec = %li\n", usec);

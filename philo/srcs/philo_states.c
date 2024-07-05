@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 12:31:22 by simarcha          #+#    #+#             */
-/*   Updated: 2024/07/04 18:13:46 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/07/05 12:16:46 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,13 @@
 	pthread_mutex_unlock(philo->mutex);
 }*/
 
-/*void	dying_state_for_one_philo(t_philo *philo)
+void	dying_state_for_one_philo(t_philo *philo)
 {
-	struct timeval	stop;
+//	struct timeval	stop;
 
 	precise_usleep(philo->time_to_die * 1000);
-	gettimeofday(&stop, NULL);
-	printf("stop.tv_sec = %li\n", stop.tv_sec);
-	printf("la difference des deux = %li\n", philo->start_living.tv_sec);
-	philo->timestamp_in_ms = (stop.tv_usec - philo->start_living.tv_usec);
-	printf("%li 1 died\n", philo->timestamp_in_ms);
-	//philo->timestamp_in_ms = ;
-	//printf("philo->timestamp_in_ms = %i\n", philo->timestamp_in_ms);
+//	gettimeofday(&stop, NULL);
+	printf("%li 1 died\n", timestamp_in_ms(philo->start_living));
 	return ;
 }
-*/
+

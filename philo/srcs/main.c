@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 12:09:47 by simarcha          #+#    #+#             */
-/*   Updated: 2024/07/04 18:18:26 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/07/05 12:16:58 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,6 @@ t_philo	*init_philo_struct(char **argv)
 	int				philo_nb;
 	t_philo			*philo;
 	struct timeval	start;
-	struct timeval	end;
-
 
 	philo_nb = ft_atoi(argv[1]);
 	philo = malloc(sizeof(t_philo) * philo_nb);
@@ -42,12 +40,15 @@ t_philo	*init_philo_struct(char **argv)
 		philo->nb_must_eat = ft_atoi(argv[5]);
 	else
 		philo->nb_must_eat = -1;
-
 	gettimeofday(&start, NULL);
+	philo->start_living = start;
+/*	
+	struct timeval	end;
+
 	printf("start.tv_usec = %li\n", start.tv_usec);
 	precise_usleep(2 * 1000000);
 	gettimeofday(&end, NULL);
-	printf("end.tv_usec = %li\n", end.tv_usec)
+	printf("end.tv_usec = %li\n", end.tv_usec);*/
 	return (philo);
 }
 
@@ -84,8 +85,8 @@ int	init_threads(t_philo *philo)
 
 int	start_philosophing(t_philo *philo)
 {
-//	if (philo->nb_philo == 1)
-//		dying_state_for_one_philo(philo);
+	if (philo->nb_philo == 1)
+		dying_state_for_one_philo(philo);
 	if (philo->nb_philo % 2 == 0)
 	{
 		if (init_threads(philo) == -1)
@@ -98,6 +99,24 @@ int	start_philosophing(t_philo *philo)
 	return (0);
 }
 
+long	timestamp_in_ms(struct timeval start)
+{
+	struct timeval	end;
+	long int		sec;
+	long int		usec;
+	long int		elapsed_time_in_ms;
+//	long int		elapsed_time_in_us;
+//	long int		elapsed_time_in_sec;
+
+	gettimeofday(&end, NULL);
+	sec = end.tv_sec - start.tv_sec;
+	usec = end.tv_usec - start.tv_usec;
+//	elapsed_time_in_us = (sec * 1000000L) + (usec);
+	elapsed_time_in_ms = (sec * 1000L) + (usec / 1000L);
+//	elapsed_time_in_sec = (sec) + (usec / 1000000L);
+	return (elapsed_time_in_ms);
+}
+
 int	main(int argc, char **argv)
 {
 	t_philo	*philo;
@@ -106,6 +125,7 @@ int	main(int argc, char **argv)
 		return (1);
 	philo = init_philo_struct(argv);
 	start_philosophing(philo);
+	//precise_usleep(1 * 1000000);
 	free(philo);
 	return (0);
 }

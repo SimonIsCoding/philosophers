@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 11:59:17 by simarcha          #+#    #+#             */
-/*   Updated: 2024/07/04 18:05:18 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/07/05 12:17:09 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,10 @@ typedef struct philo
 	int				time_to_sleep;
 	int				nb_must_eat;
 	struct timeval	start_living;
-	long int		timestamp_in_ms;
+	long			timestamp_in_ms;
 	pthread_mutex_t	mutex;
-	//left_fork
-	//right_fork
+	pthread_mutex_t	left_fork;
+	pthread_mutex_t	right_fork;
 	//write_philo_state => use mutex if you use printf function
 }				t_philo;
 
@@ -64,5 +64,8 @@ void	precise_usleep(long usec);
 
 //philo_states.c
 void	dying_state_for_one_philo(t_philo *philo);
+
+//main.c
+long	timestamp_in_ms(struct timeval start);
 
 #endif

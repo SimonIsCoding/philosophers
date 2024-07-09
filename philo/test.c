@@ -1,8 +1,8 @@
-/*#include <pthread.h>
+#include <pthread.h>
 #include <unistd.h>
 #include <stdio.h>
 
-void* thread_func(void* arg) 
+/*void* thread_func(void* arg) 
 {
     printf("Hello from the thread!\n");
     return NULL;
@@ -265,7 +265,7 @@ int main(void)
 	return (0);
 }*/
 
-long	get_elapsed_time_microseconds(struct timeval start,
+/*long	get_elapsed_time_microseconds(struct timeval start,
 						struct timeval end)
 {
 	return ((end.tv_sec - start.tv_sec) * 1000000L
@@ -322,5 +322,49 @@ int	main(void)
 	printf("temps_ecoule_en_ms = %li\n", temps_ecoule_en_ms);
 	printf("temps_ecoule_en_sec = %li\n\n", temps_ecoule_en_sec);
 
+	return (0);
+}*/
+
+int				mails = 0;
+pthread_mutex_t	mutex;
+
+void	*routine()
+{
+	int	i;
+
+	i = 0;
+	while (i < 100000000)
+	{
+		pthread_mutex_lock(&mutex);
+		mails++;
+		i++;
+		pthread_mutex_unlock(&mutex);
+	}
+	return (NULL);
+}
+
+int	main(void)
+{
+	pthread_t	p1;
+	pthread_t	p2;
+
+//	printf("1\n");
+	pthread_mutex_init(&mutex, NULL);
+//	printf("2\n");
+	if (pthread_create(&p1, NULL, &routine, NULL) != 0)
+		return (1);
+//	printf("3\n");
+	if (pthread_create(&p2, NULL, &routine, NULL) != 0)
+		return (1);
+//	printf("4\n");
+	if (pthread_join(p1, NULL) != 0)
+		return (2);
+//	printf("5\n");
+	if (pthread_join(p2, NULL) != 0)
+		return (2);
+//	printf("6\n");
+	pthread_mutex_destroy(&mutex);
+//	printf("7\n");
+	printf("mails = %i\n", mails);
 	return (0);
 }

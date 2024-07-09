@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 17:10:53 by simarcha          #+#    #+#             */
-/*   Updated: 2024/07/04 11:51:27 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/07/09 13:20:51 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,14 +113,12 @@ static int	is_number_not_good(char *argv, int i)
 int	check_error(int argc, char **argv)
 {
 	int	i;
-	int	j;
 
 	if (argc != 5 && argc != 6)
 		return (display_error_message(), 1);
 	i = 1;
 	while (argv[i])
 	{
-		j = 0;
 		if (check_number_range(argv[i], "2147483647", "-2147483648") == 0)
 		{
 			write(2, "You have to input integers only\n", 33);

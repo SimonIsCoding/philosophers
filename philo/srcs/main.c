@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 12:09:47 by simarcha          #+#    #+#             */
-/*   Updated: 2024/07/09 15:08:43 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/07/09 17:15:29 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,22 +78,23 @@ t_philo	*init_philo_struct(char **argv)
 
 void	 philo_taking_fork(t_philo *philo)
 {
-	int	total_fork = philo->nb_philo;
+	int			total_fork;
 	static int	counter = 0;
 
-//printf("philo taking fork\n");
+	total_fork = philo->nb_philo;
 	pthread_mutex_lock(&philo->left_fork);
-	//philo->left_fork = 1;
 	printf("%li %i has taken a fork\n", timestamp_in_ms(philo->start_living), philo->thread_id);
 	counter++;
 	total_fork--;
-	//printf("%li %i has taken a fork\n", timestamp_in_ms(philo->start_living), philo->thread_id);
-	//total_fork--;
 	pthread_mutex_unlock(&philo->left_fork);
 	if (counter % 2 == 0)
 		printf("%li %i is eating\n", timestamp_in_ms(philo->start_living), philo->thread_id);
-
 	return ;
+}
+
+void	philo_sleeping(t_philo *philo)
+{
+	printf("%li %i is sleeping\n", timestamp_in_ms(philo->start_living), philo->thread_id);
 }
 
 void	*philo_routine(void *arg)
@@ -102,10 +103,15 @@ void	*philo_routine(void *arg)
 	t_philo			*philo;
 
 	philo = (t_philo *)arg;
-	//printf("i = %i\n", i);
-	if (i % 2 == 1)
+	if (philo->thread_id % 2 == 1)
 	{
 		philo_taking_fork(philo);
+		precise_usleep(philo->time_to_eat);
+		philo_sleeping(philo);
+	}
+	else
+	{
+		
 	}
 	i++;
 	return (NULL);
@@ -113,32 +119,26 @@ void	*philo_routine(void *arg)
 
 int	init_threads(t_philo *philo)
 {
-	int			i;
+	static int	i = 0;
 	pthread_t	thread[philo->nb_philo];
 
-	i = 0;
 	pthread_mutex_init(&philo->left_fork, NULL);
 	while (i < philo->nb_philo)
 	{
+		printf("philo->thread_id = %i\n", philo->thread_id);
 		philo->thread_id = i;
-		//printf("philo->thread_id = %i\n", philo->thread_id);
 		if (pthread_create(&thread[i], NULL, &philo_routine, philo) == -1)
-		{
 			return (-1);
-		}
 		i++;
 	}
-	//printf("this is a test\n");
-	i = 0;
-	while (i < philo->nb_philo)
+	static int j = 0;
+	while (j < philo->nb_philo)
 	{
-		//printf("joining the threads\n");
-		if (pthread_join(thread[i], NULL) == -1)
+		if (pthread_join(thread[j], NULL) == -1)
 			return (-1);
-		i++;
+		j++;
 	}
 	pthread_mutex_destroy(&philo->left_fork);
-	//printf("end init_threads\n");
 	return (0);
 }
 
@@ -148,7 +148,6 @@ int	start_philosophing(t_philo *philo)
 		return (dying_state_for_one_philo(philo), 0);
 	if (philo->nb_philo % 2 == 0)
 	{
-		//printf("main.c l.172\n");
 		if (init_threads(philo) == -1)
 			return (-1);
 	}

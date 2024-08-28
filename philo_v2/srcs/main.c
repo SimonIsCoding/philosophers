@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 16:44:46 by simarcha          #+#    #+#             */
-/*   Updated: 2024/08/28 21:50:22 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/08/28 21:51:06 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	*routine(void *arg)
 	philo = (t_philo *)arg;
 	
 	pthread_mutex_lock(&philo->left_fork);
-	printf("philo 1 has taken a fork\n");
+	printf("philo %i has taken a fork\n", philo->thread_id);
 	pthread_mutex_unlock(&philo->left_fork);
 
 //	printf("we are in routine\n");

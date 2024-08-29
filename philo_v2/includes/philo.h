@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 11:59:17 by simarcha          #+#    #+#             */
-/*   Updated: 2024/08/28 17:31:34 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/08/29 17:21:01 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,15 @@ typedef struct s_philo
 	int				time_to_sleep;
 	int				nb_must_eat;
 	long			timestamp_in_ms;
+	int				has_eaten;
 	struct timeval	start;
 	pthread_mutex_t	left_fork;
 	pthread_mutex_t	right_fork;
+	pthread_mutex_t	*print_mutex;
 }	t_philo;
+
+//custome_usleep.c
+void		precise_usleep(long microsecond);
 
 //utils_functions.c
 int			ft_isdigit(int c);

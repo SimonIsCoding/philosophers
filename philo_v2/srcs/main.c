@@ -6,13 +6,13 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 16:44:46 by simarcha          #+#    #+#             */
-/*   Updated: 2024/08/28 21:51:06 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/08/29 18:52:07 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-//je veux creer une fonction qui m'imprimes quel philo a ris un fourchette
+//je veux creer une fonction qui m'imprimes quel philo a pris un fourchette
 //avant je devrais mettre le temps qui s'est ecoule avant cette action
 
 long	timestamp_in_ms(struct timeval start)
@@ -31,19 +31,22 @@ long	timestamp_in_ms(struct timeval start)
 
 void	print_philo_struct(t_philo *philo)
 {
+	printf("philo_thread_id = %i\n", philo->thread_id);
 	printf("nb_philo = %i\n", philo->nb_philo);
 	printf("time_to_die = %i\n", philo->time_to_die);
 	printf("time_to_eat = %i\n", philo->time_to_eat);
 	printf("time_to_sleep = %i\n", philo->time_to_sleep);
 	printf("nb_must_eat = %i\n", philo->nb_must_eat);
 	printf("start = %li\n", timestamp_in_ms(philo->start));
+	printf("philo_has_eaten = %i\n", philo->has_eaten);
+	printf("_________________\n");
 }
 
-t_philo	*init_philo_struct(t_philo *philo, int i, char **argv)
+/*void	init_philo_struct(t_philo *philo, int i, char **argv)
 {
 	struct timeval	start;
 
-	philo->thread_id = i + 1;
+	philo->thread_id = i + 1;//verifie que le i est bien correct
 	philo->nb_philo = ft_atoi(argv[1]);
 	philo->time_to_die = ft_atoi(argv[2]);
 	philo->time_to_eat = ft_atoi(argv[3]);
@@ -55,8 +58,8 @@ t_philo	*init_philo_struct(t_philo *philo, int i, char **argv)
 	gettimeofday(&start, NULL);
 	philo->start = start;
 //	print_philo_struct(philo);
-	return (philo);
-}
+//	return (philo);
+}*/
 
 //	while (philo->nb_must_eat >= 0 && i < philo->eat)
 void	*routine(void *arg)
@@ -65,22 +68,35 @@ void	*routine(void *arg)
 
 	philo = (t_philo *)arg;
 	
+	pthread_mutex_lock(&philo->right_fork);
+	pthread_mutex_lock(philo->print_mutex);
+	printf("%li philo %i has taken a fork\n", timestamp_in_ms(philo->start), philo->thread_id);
+	pthread_mutex_unlock(philo->print_mutex);
 	pthread_mutex_lock(&philo->left_fork);
-	printf("philo %i has taken a fork\n", philo->thread_id);
+	pthread_mutex_lock(philo->print_mutex);
+	printf("%li philo %i has taken a fork\n", timestamp_in_ms(philo->start), philo->thread_id);
+	printf("%li philo %i is eating\n", timestamp_in_ms(philo->start), philo->thread_id);
+	precise_usleep(philo->time_to_eat * 1000);
+	pthread_mutex_unlock(philo->print_mutex);
+	philo->has_eaten += 1;
+	pthread_mutex_lock(philo->print_mutex);
+	printf("%li philo %i is sleeping\n", timestamp_in_ms(philo->start), philo->thread_id);
+	pthread_mutex_unlock(philo->print_mutex);
+	pthread_mutex_unlock(&philo->right_fork);
 	pthread_mutex_unlock(&philo->left_fork);
-
-//	printf("we are in routine\n");
-//	sleep(3);
-//	printf("end routine\n");
+	//precise_usleep(1000);
+//	printf("we are in %li ms\n", timestamp_in_ms(philo->start));
+	
 	return (NULL);
 }
 
-void	init_threads(t_philo *philo, pthread_mutex_t *forks/*, char **argv*/)
+void	init_threads(t_philo *philo, pthread_mutex_t *forks)
 {
 	pthread_t		thread[philo->nb_philo];
 	int	i;
 
 	i = 0;
+	//printf("nb_philo = %i\n", philo->nb_philo);
 	while (i < philo->nb_philo)
 	{
 		philo->left_fork = forks[i];
@@ -101,16 +117,40 @@ int	main(int argc, char **argv)
 	pthread_mutex_t	forks[ft_atoi(argv[1])];
 	t_philo			philo[ft_atoi(argv[1])];
 	int				i;
-	
+	struct timeval	start;
+	int				nb_philo;
+	pthread_mutex_t	print_mutex;
+
+	nb_philo = ft_atoi(argv[1]);
 	i = -1;
-	while (++i < philo->nb_philo)
+	pthread_mutex_init(&print_mutex, NULL);
+	while (++i < nb_philo)
 		pthread_mutex_init(&forks[i], NULL);
-	init_philo_struct(&philo[i], i, argv);
-	print_philo_struct(&philo[i]);
-	init_threads(philo, forks);//, argv);
+	//mets a jour le i
 	i = -1;
-	while (++i < philo->nb_philo)
+	while (++i < nb_philo)
+	{
+		philo[i].thread_id = i + 1;//verifie que le i est bien correct
+		philo[i].nb_philo = ft_atoi(argv[1]);
+		philo[i].time_to_die = ft_atoi(argv[2]);
+		philo[i].time_to_eat = ft_atoi(argv[3]);
+		philo[i].time_to_sleep = ft_atoi(argv[4]);
+		if (argv[5])
+			philo[i].nb_must_eat = ft_atoi(argv[5]);
+		else
+			philo[i].nb_must_eat = -1;
+		gettimeofday(&start, NULL);
+		philo[i].start = start;
+		philo[i].has_eaten = 0;
+		philo[i].print_mutex = &print_mutex;
+	//	init_philo_struct(&philo[i], i, argv);
+		print_philo_struct(&philo[i]);
+	}
+	init_threads(philo, forks);
+	i = -1;
+	while (++i < nb_philo)
 		pthread_mutex_destroy(&forks[i]);
+	pthread_mutex_destroy(&print_mutex);
 	argc = 0;
 	return (0);
 }

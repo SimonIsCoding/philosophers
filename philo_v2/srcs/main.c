@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 16:44:46 by simarcha          #+#    #+#             */
-/*   Updated: 2024/08/29 18:52:07 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/02 14:47:49 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,13 +61,8 @@ void	print_philo_struct(t_philo *philo)
 //	return (philo);
 }*/
 
-//	while (philo->nb_must_eat >= 0 && i < philo->eat)
-void	*routine(void *arg)
+void	very_first_meal(t_philo *philo)
 {
-	t_philo	*philo;
-
-	philo = (t_philo *)arg;
-	
 	pthread_mutex_lock(&philo->right_fork);
 	pthread_mutex_lock(philo->print_mutex);
 	printf("%li philo %i has taken a fork\n", timestamp_in_ms(philo->start), philo->thread_id);
@@ -78,15 +73,54 @@ void	*routine(void *arg)
 	printf("%li philo %i is eating\n", timestamp_in_ms(philo->start), philo->thread_id);
 	precise_usleep(philo->time_to_eat * 1000);
 	pthread_mutex_unlock(philo->print_mutex);
-	philo->has_eaten += 1;
 	pthread_mutex_lock(philo->print_mutex);
 	printf("%li philo %i is sleeping\n", timestamp_in_ms(philo->start), philo->thread_id);
 	pthread_mutex_unlock(philo->print_mutex);
 	pthread_mutex_unlock(&philo->right_fork);
 	pthread_mutex_unlock(&philo->left_fork);
-	//precise_usleep(1000);
-//	printf("we are in %li ms\n", timestamp_in_ms(philo->start));
-	
+}
+
+void	*routine(void *arg)
+{
+	t_philo	*philo;
+	int		eating_times;
+
+	philo = (t_philo *)arg;
+	very_first_meal(philo);
+	eating_times = 0;
+	while (philo->nb_must_eat == -1 || (eating_times <= philo->nb_must_eat * philo->nb_philo))
+	{
+		if (eating_times == 0 && philo->thread_id == 1)
+		{
+		//	continue ;
+			//on veut sauter le premier philo qui doit manger car il a deja mange
+		}
+/*		pthread_mutex_lock(&philo->right_fork);
+		pthread_mutex_lock(philo->print_mutex);
+		printf("%li philo %i has taken a fork\n", timestamp_in_ms(philo->start), philo->thread_id);
+		pthread_mutex_unlock(philo->print_mutex);
+		pthread_mutex_lock(&philo->left_fork);
+		pthread_mutex_lock(philo->print_mutex);
+		printf("%li philo %i has taken a fork\n", timestamp_in_ms(philo->start), philo->thread_id);
+		printf("%li philo %i is eating\n", timestamp_in_ms(philo->start), philo->thread_id);
+		precise_usleep(philo->time_to_eat * 1000);
+		pthread_mutex_unlock(philo->print_mutex);
+		philo->has_eaten += 1;
+		pthread_mutex_lock(philo->print_mutex);
+		printf("%li philo %i is sleeping\n", timestamp_in_ms(philo->start), philo->thread_id);
+		pthread_mutex_unlock(philo->print_mutex);
+		pthread_mutex_lock(philo->print_mutex);
+		printf("%li philo %i is thinking\n", timestamp_in_ms(philo->start), philo->thread_id % philo->nb_philo);
+		pthread_mutex_unlock(philo->print_mutex);
+		pthread_mutex_unlock(&philo->right_fork);
+		pthread_mutex_unlock(&philo->left_fork);
+		eating_times++;*/
+		
+	}
+	if (pthread_mutex_lock(&philo->right_fork) == 0)
+	{
+		
+	}
 	return (NULL);
 }
 

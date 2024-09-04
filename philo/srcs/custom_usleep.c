@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 12:23:51 by simarcha          #+#    #+#             */
-/*   Updated: 2024/07/05 12:23:56 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/07/12 11:55:48 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ long	get_elapsed_time_microseconds(struct timeval start,
 		+ (end.tv_usec - start.tv_usec));
 }
 
-void	precise_usleep(long usec)
+void	precise_usleep(long microsecond)
 {
 	struct timeval	start;
 	struct timeval	current;
@@ -29,14 +29,14 @@ void	precise_usleep(long usec)
 	gettimeofday(&start, NULL);
 	gettimeofday(&current, NULL);
 	elapsed = get_elapsed_time_microseconds(start, current);
-	rem = usec - elapsed;
+	rem = microsecond - elapsed;
 	if (rem > 1000)
 		usleep(rem / 2);
-	while (elapsed < usec)
+	while (elapsed < microsecond)
 	{
 		gettimeofday(&current, NULL);
 		elapsed = get_elapsed_time_microseconds(start, current);
-		rem = usec - elapsed;
+		rem = microsecond - elapsed;
 		if (rem > 1000)
 			usleep(rem / 2);
 	}

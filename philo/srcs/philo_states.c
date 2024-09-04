@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 12:31:22 by simarcha          #+#    #+#             */
-/*   Updated: 2024/07/05 12:21:18 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/04 13:14:16 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,3 +27,24 @@ void	dying_state_for_one_philo(t_philo *philo)
 	return ;
 }
 
+/*{
+	pthread_t	thread[philo->nb_philo];
+	int			i;
+
+	i = 0;
+	//printf("nb_philo = %i\n", philo->nb_philo);
+	while (i < philo->nb_philo)
+	{
+		philo->left_fork = forks[i];
+		philo->right_fork = forks[(i + 1) % philo->nb_philo];
+		pthread_create(&thread[i], NULL, &routine, &philo[i]);
+		//printf("i = %i\n", i);
+		i++;
+	}
+	i = 0;
+	while (i < philo->nb_philo)
+	{
+		pthread_join(thread[i], NULL);
+		i++;
+	}
+}*/

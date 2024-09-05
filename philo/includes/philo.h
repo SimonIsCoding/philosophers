@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 11:59:17 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/04 17:48:03 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/05 14:02:12 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,13 @@ typedef struct philo
 	int				nb_must_eat;
 	//int				fork_remaining;
 	struct timeval	start_living;
+	struct timeval	time_last_meal;
 	long			timestamp_in_ms;
 	int				dead_flag;
 //	t_mutex			mutex;
 	pthread_mutex_t	left_fork;
 	pthread_mutex_t	right_fork;
-	pthread_mutex_t	*print_mutex;
+	pthread_mutex_t	print_mutex;
 }				t_philo;
 
 /*typedef struct mutex
@@ -65,11 +66,19 @@ int		check_error(int argc, char **argv);
 long	get_elapsed_time_microseconds(struct timeval start,
 						struct timeval end);
 void	precise_usleep(long usec);
+long	timestamp_in_ms(struct timeval start);
 
 //philo_states.c
 void	dying_state_for_one_philo(t_philo *philo);
 
 //main.c
-long	timestamp_in_ms(struct timeval start);
+
+//init_philo_struct.c
+t_philo	*init_philo_struct(char **argv);//to free once used
+void	print_philo(t_philo *philo);
+
+//philo_routine.c
+void 	*philo_routine(void *arg);
+
 
 # endif

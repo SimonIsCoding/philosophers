@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 12:23:51 by simarcha          #+#    #+#             */
-/*   Updated: 2024/07/12 11:55:48 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/05 12:08:11 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,20 @@ void	precise_usleep(long microsecond)
 		if (rem > 1000)
 			usleep(rem / 2);
 	}
+}
+
+long	timestamp_in_ms(struct timeval start)
+{
+	struct timeval	end;
+	long			sec;
+	long			usec;
+	long			elapsed_time_in_ms;
+
+	gettimeofday(&end, NULL);
+	sec = end.tv_sec - start.tv_sec;
+	usec = end.tv_usec - start.tv_usec;
+	elapsed_time_in_ms = (sec * 1000L) + (usec / 1000L);
+	return (elapsed_time_in_ms);
 }
 /*
 int	main(void)

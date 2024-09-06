@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 13:58:52 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/05 19:40:43 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/06 13:40:46 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,16 +45,20 @@ void *philo_routine(void *arg)
 		printf("%li %i has taken a fork\n", timestamp_in_ms(philo->start_living), philo->thread_id);
 		printf("%li %i has taken a fork\n", timestamp_in_ms(philo->start_living), philo->thread_id);
 		printf("%li %i is eating\n", timestamp_in_ms(philo->start_living), philo->thread_id);
-		pthread_mutex_unlock(&philo->print_mutex);
+		//pthread_mutex_unlock(&philo->print_mutex);
 		precise_usleep(philo->time_to_eat * 1000);
 		gettimeofday(&reset, NULL);
 		philo->time_last_meal = reset;
-		pthread_mutex_lock(&philo->print_mutex);
+		//pthread_mutex_lock(&philo->print_mutex);
 		printf("%li %i is sleeping\n", timestamp_in_ms(philo->start_living), philo->thread_id);
+		precise_usleep(philo->time_to_sleep * 1000);
+		//pthread_mutex_unlock(&philo->print_mutex);
+		//pthread_mutex_lock(&philo->print_mutex);
+		if ((philo->thread_id + 1) % philo->nb_philo != 0)
+			printf("%li %i is thinking\n", timestamp_in_ms(philo->start_living), ((philo->thread_id + 1) % philo->nb_philo));
 		pthread_mutex_unlock(&philo->left_fork);
 		pthread_mutex_unlock(&philo->right_fork);
 		pthread_mutex_unlock(&philo->print_mutex);
-		precise_usleep(philo->time_to_sleep * 1000);
 		eating_times++;
 	}
 	return (NULL);

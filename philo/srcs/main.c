@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 12:09:47 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/05 19:49:39 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/06 13:39:30 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ int init_threads(t_philo *philo, pthread_mutex_t *forks)
 	i = 0;
 	while (i < philo->nb_philo)
 	{
+		pthread_mutex_init(&philo->print_mutex, NULL);
 		pthread_mutex_init(&philo[i].left_fork, NULL);
 		pthread_mutex_init(&philo[i].right_fork, NULL);
 		philo->left_fork = forks[i];
@@ -65,6 +66,7 @@ int init_threads(t_philo *philo, pthread_mutex_t *forks)
 			return (-1);
 		pthread_mutex_destroy(&philo[i].left_fork);
 		pthread_mutex_destroy(&philo[i].right_fork);
+		pthread_mutex_destroy(&philo->print_mutex);
 		i++;
 	}
 	return (0);

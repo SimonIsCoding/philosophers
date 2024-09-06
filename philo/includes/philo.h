@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 11:59:17 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/05 14:02:12 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/06 15:55:00 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ int			ft_isdigit(int c);
 int			ft_strcmp(const char *s1, const char *s2);
 size_t		ft_strlen(const char *s);
 int			ft_atoi(const char *str);
+char		*ft_itoa(int n);
+
 
 //parsing.c
 int		check_error(int argc, char **argv);

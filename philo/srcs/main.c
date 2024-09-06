@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 12:09:47 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/06 13:39:30 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/06 15:07:21 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@
 200 2 has taken a fork
 200 2 has taken a fork
 200 2 is eating
-400 2 is sleeping
 400 1 is thinking
+400 2 is sleeping
 400 1 has taken a fork
 400 1 has taken a fork
 400 1 is eating
@@ -32,13 +32,21 @@
 600 2 has taken a fork
 600 2 has taken a fork
 600 2 is eating
-800 2 is sleeping
 800 1 is thinking
+800 2 is sleeping
 800 1 has taken a fork
 800 1 has taken a fork
 800 1 is eating
-1000 1 is sleeping
 1000 2 is thinking
+1000 2 has taken a fork
+1000 2 has taken a fork
+1000 2 is eating
+1000 1 is sleeping
+1200 1 is thinking
+1200 2 is sleeping
+1200 1 has taken a fork
+1200 1 has taken a fork
+1200 1 is eating
 ...
 */
 

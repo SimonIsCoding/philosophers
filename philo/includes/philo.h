@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 11:59:17 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/10 10:57:36 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/10 16:07:15 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,20 +29,19 @@
 
 typedef struct philo
 {
-	int				thread_id;
-	int				nb_philo;
-	int				time_to_die;
-	int				time_to_eat;
-	int				time_to_sleep;
-	int				nb_must_eat;
-	int				eating_times;
+	long			thread_id;
+	long			nb_philo;
+	long			time_to_die;
+	long			time_to_eat;
+	long			time_to_sleep;
+	long			nb_must_eat;
+	long			eating_times;
 	struct timeval	start_living;
 	struct timeval	time_last_meal;
 	long			timestamp_in_ms;
-	int				dead_flag;
-//	t_mutex			mutex;
-	pthread_mutex_t	left_fork;
-	pthread_mutex_t	right_fork;//one has to be a pointer
+	long			dead_flag;
+	pthread_mutex_t	*left_fork;//one has to be a pointer
+	pthread_mutex_t	right_fork;
 	pthread_mutex_t	print_mutex;
 }				t_philo;
 
@@ -75,8 +74,11 @@ void	dying_state_for_one_philo(t_philo *philo);
 
 //main.c
 
-//init_philo_struct.c
-t_philo	*init_philo_struct(char **argv);//to free once used
+//init.c
+t_philo			*init_philo_struct(char **argv);//to free once used
+int 			init_threads(t_philo *philo, pthread_mutex_t *forks);
+pthread_mutex_t *init_mutexes_forks(t_philo *philo);
+
 void	print_philo(t_philo *philo);
 
 //philo_routine.c

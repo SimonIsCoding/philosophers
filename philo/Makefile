@@ -6,7 +6,7 @@
 #    By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/01 15:18:01 by simarcha          #+#    #+#              #
-#    Updated: 2024/09/05 14:03:12 by simarcha         ###   ########.fr        #
+#    Updated: 2024/09/10 15:26:28 by simarcha         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ SRCS_FILES			= main.c \
 					parsing.c \
 					custom_usleep.c \
 					philo_states.c \
-					init_philo_struct.c \
+					init.c \
 					philo_routine.c
 SRCS				= $(addprefix $(SRCS_DIR), $(SRCS_FILES))
 

@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 12:09:47 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/09 19:31:00 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/10 15:24:29 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,51 +49,6 @@
 1200 1 is eating
 ...
 */
-
-int init_threads(t_philo *philo, pthread_mutex_t *forks)
-{
-	int i;
-	pthread_t thread[philo->nb_philo];
-
-	i = 0;
-	while (i < philo->nb_philo)
-	{
-		pthread_mutex_init(&philo->print_mutex, NULL);
-		pthread_mutex_init(&philo[i].left_fork, NULL);
-		pthread_mutex_init(&philo[i].right_fork, NULL);
-		philo->left_fork = forks[i];
-		philo->right_fork = forks[(i + 1) % philo->nb_philo];
-		if (pthread_create(&thread[i], NULL, &philo_routine, &philo[i]) == -1)
-			return (-1);
-		i++;
-	}
-	i = 0;
-	while (i < philo->nb_philo)
-	{
-		if (pthread_join(thread[i], NULL) == -1)
-			return (-1);
-		pthread_mutex_destroy(&philo[i].left_fork);
-		pthread_mutex_destroy(&philo[i].right_fork);
-		pthread_mutex_destroy(&philo->print_mutex);
-		i++;
-	}
-	return (0);
-}
-
-pthread_mutex_t *init_mutexes_forks(t_philo *philo)
-{
-	pthread_mutex_t	*forks;
-	int				i;
-
-	//	pthread_mutex_init(&philo->print_mutex, NULL);
-	i = -1;
-	forks = malloc(sizeof(pthread_mutex_t) * philo->nb_philo);
-	if (!forks)
-		return (NULL);
-	while (++i < philo->nb_philo)
-		pthread_mutex_init(&forks[i], NULL);
-	return (forks);
-}
 
 int start_philosophing(t_philo *philo, pthread_mutex_t *forks)
 {

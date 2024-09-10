@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 12:09:47 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/06 15:07:21 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/09 19:31:00 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int init_threads(t_philo *philo, pthread_mutex_t *forks)
 	return (0);
 }
 
-pthread_mutex_t *init_forks(t_philo *philo)
+pthread_mutex_t *init_mutexes_forks(t_philo *philo)
 {
 	pthread_mutex_t	*forks;
 	int				i;
@@ -129,7 +129,7 @@ int main(int argc, char **argv)
 		return (1);
 	philo = init_philo_struct(argv); // to free once used
 //	print_philo(philo);
-	forks = init_forks(philo);		  // to free once used
+	forks = init_mutexes_forks(philo);// to free once used
 	start_philosophing(philo, forks); //=>init_threads
 	destroy_forks(philo, forks);
 	free(philo);

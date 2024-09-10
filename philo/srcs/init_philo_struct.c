@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 12:04:40 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/05 13:52:24 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/10 10:59:29 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ t_philo	*init_philo_struct(char **argv)//to free once used
 		gettimeofday(&start, NULL);
 		philo[i].start_living = start;
 		philo[i].time_last_meal = start;
+		philo[i].eating_times = 0;
 	}
 	return (philo);
 }

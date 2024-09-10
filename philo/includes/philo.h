@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 11:59:17 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/06 15:55:00 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/10 10:57:36 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,14 @@ typedef struct philo
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				nb_must_eat;
-	//int				fork_remaining;
+	int				eating_times;
 	struct timeval	start_living;
 	struct timeval	time_last_meal;
 	long			timestamp_in_ms;
 	int				dead_flag;
 //	t_mutex			mutex;
 	pthread_mutex_t	left_fork;
-	pthread_mutex_t	right_fork;
+	pthread_mutex_t	right_fork;//one has to be a pointer
 	pthread_mutex_t	print_mutex;
 }				t_philo;
 

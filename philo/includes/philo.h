@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 11:59:17 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/11 12:57:14 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/11 14:25:32 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,6 @@ typedef struct philo
 	pthread_mutex_t	print_mutex;
 }				t_philo;
 
-/*typedef struct mutex
-{
-	pthread_mutex_t	left_fork;
-	pthread_mutex_t	right_fork;
-}				t_mutex;*/
-
-
 //utils_functions.c
 int			ft_isdigit(int c);
 int			ft_strcmp(const char *s1, const char *s2);
@@ -83,6 +76,5 @@ void	print_philo(t_philo *philo);
 
 //philo_routine.c
 void 	*philo_routine(void *arg);
-
 
 # endif

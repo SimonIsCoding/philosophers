@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 12:04:40 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/10 17:09:32 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/11 12:59:23 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,28 +56,28 @@ pthread_mutex_t *init_mutexes_forks(t_philo *philo)
 	while (++i < philo->nb_philo)
 	{
 		pthread_mutex_init(&forks[i], NULL);
-		philo->left_fork = &forks[i];
+		philo[i].left_fork = &forks[i];
+		philo[i].right_fork = &forks[(i + 1) % philo->nb_philo];
 	}
-	//printf("%i\n");
 	return (forks);
 }
 
+//une fois que tu initialises le mutex, il faut que tu le mettes dans ta structure philo
+//comme ca tu definies le mutex correspondant a la fourchette droite et gauche pour chaque philo
 int init_threads(t_philo *philo, pthread_mutex_t *forks)
 {
-	int i;
-	pthread_t thread[philo->nb_philo];
+	int 		i;
+	pthread_t	thread[philo->nb_philo];
 
 	i = -1;
+		pthread_mutex_init(&philo->print_mutex, NULL);//why it should be out of the while loop ?
 	while (++i < philo->nb_philo)
 	{
-		pthread_mutex_init(&philo->print_mutex, NULL);
-		pthread_mutex_init(&forks[i], NULL);
-	//	pthread_mutex_init(&forks[i], NULL);
-		philo->left_fork = &forks[i];
-//		printf("forks[%i]\n", i);
-		philo->right_fork = forks[(i + 1) % (int)philo->nb_philo];
-//		printf("forks[%i]\n", (i + 1) % (int)philo->nb_philo);
-//		sleep(2);
+		if (philo->thread_id % 2 == 0)
+		{
+			usleep(1);
+			//sleep(5);
+		}
 		if (pthread_create(&thread[i], NULL, &philo_routine, &philo[i]) == -1)
 			return (-1);
 	}
@@ -87,9 +87,9 @@ int init_threads(t_philo *philo, pthread_mutex_t *forks)
 		if (pthread_join(thread[i], NULL) == -1)
 			return (-1);
 		pthread_mutex_destroy(&forks[i]);
-		pthread_mutex_destroy(&forks[(i + 1) % (int)philo->nb_philo]);
-		pthread_mutex_destroy(&philo->print_mutex);
+	//	pthread_mutex_destroy(&forks[(i + 1) % (int)philo->nb_philo]);
 	}
+		pthread_mutex_destroy(&philo->print_mutex);
 	return (0);
 }
 

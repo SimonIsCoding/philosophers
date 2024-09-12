@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 13:58:52 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/11 16:19:03 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/12 11:59:10 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ static int	break_conditions(t_philo *philo)
 		printf("\033[1;38;5;214m%li %li is dead ⚰️\033[0m\n",
 			timestamp_in_ms(philo->start_living), philo->thread_id);
 		pthread_mutex_unlock(&philo->print_mutex);
+//		*(philo->dead_flag) = 1L;
 		return (1);
-//		exit(1);
 	}
 	return (0);
 }
@@ -32,9 +32,17 @@ void	eat(t_philo *philo)
 {
 	struct timeval	reset;
 
+	if (philo->left_fork < philo->right_fork)
+	{
+		pthread_mutex_lock(philo->left_fork);
+		pthread_mutex_lock(philo->right_fork);
+	}
+	else
+	{
+		pthread_mutex_lock(philo->right_fork);
+		pthread_mutex_lock(philo->left_fork);
+	}
 	pthread_mutex_lock(&philo->print_mutex);
-	pthread_mutex_lock(philo->left_fork);
-	pthread_mutex_lock(philo->right_fork);
 	printf("\033[1;38;5;196m%li %li has taken a fork\033[0m\n",
 		timestamp_in_ms(philo->start_living), philo->thread_id);//1°  🍴
 	printf("\033[1;38;5;196m%li %li has taken a fork\033[0m\n",
@@ -45,8 +53,8 @@ void	eat(t_philo *philo)
 	gettimeofday(&reset, NULL);
 	philo->time_last_meal = reset;
 	philo->eating_times++;
-	pthread_mutex_unlock(philo->left_fork);
 	pthread_mutex_unlock(philo->right_fork);
+	pthread_mutex_unlock(philo->left_fork);
 	pthread_mutex_unlock(&philo->print_mutex);
 }
 
@@ -83,11 +91,6 @@ void	think(t_philo *philo)
 	}
 }
 
-// void	destroy_and_free(t_philo *philo)
-// {
-// 	free(philo);
-// }
-
 void *philo_routine(void *arg)
 {
 	t_philo	*philo;
@@ -95,8 +98,13 @@ void *philo_routine(void *arg)
 	philo = (t_philo *)arg;
 	while(1)
 	{
+		pthread_mutex_lock(&philo->philo_is_dead);
 		if (break_conditions(philo) == 1)
-			return (NULL);
+		{
+			pthread_mutex_unlock(&philo->philo_is_dead);
+			break ;
+		}	
+		pthread_mutex_unlock(&philo->philo_is_dead);
 		eat(philo);
 		philo_sleep(philo);
 		think(philo);

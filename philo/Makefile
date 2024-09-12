@@ -6,14 +6,14 @@
 #    By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/01 15:18:01 by simarcha          #+#    #+#              #
-#    Updated: 2024/09/10 15:26:28 by simarcha         ###   ########.fr        #
+#    Updated: 2024/09/12 10:40:21 by simarcha         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 #SETUP
 NAME				= philo
 CC					= cc
-CFLAGS				= -Wall -Wextra -Werror#-fsanitize=thread
+CFLAGS				= -Wall -Wextra -Werror -fsanitize=thread
 RM					= rm -rf
 
 #INC Files - All the includes/header files that I used for this project

@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 12:09:47 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/10 15:24:29 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/12 12:00:09 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,9 @@ int	destroy_forks(t_philo *philo, pthread_mutex_t *forks)
 
 int main(int argc, char **argv)
 {
-	t_philo *philo;
-	pthread_mutex_t *forks;
+	t_philo			*philo;
+	pthread_mutex_t	*forks;
+//	long			dead_flag;
 
 	if (check_error(argc, argv) == 1)
 		return (1);
@@ -91,3 +92,4 @@ int main(int argc, char **argv)
 	free(forks);
 	return (0);
 }
+//check leaks

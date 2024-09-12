@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 12:04:40 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/11 14:16:58 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/12 11:59:23 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ t_philo	*init_philo_struct(char **argv)//to free once used
 		philo[i].start_living = start;
 		philo[i].time_last_meal = start;
 		philo[i].eating_times = 0;
-		philo[i].dead_flag = 0;
+//		philo[i].dead_flag = dead_flag;
 	}
 	return (philo);
 }
@@ -71,6 +71,7 @@ int init_threads(t_philo *philo, pthread_mutex_t *forks)
 	pthread_t	thread[philo->nb_philo];
 
 	i = -1;
+	//(void)forks;
 		pthread_mutex_init(&philo->print_mutex, NULL);//why it should be out of the while loop ?
 	while (++i < philo->nb_philo)
 	{
@@ -87,13 +88,16 @@ int init_threads(t_philo *philo, pthread_mutex_t *forks)
 	{
 		if (pthread_join(thread[i], NULL) == -1)
 			return (-1);
+	}
+	i = -1;
+	while (++i < philo->nb_philo)
 		pthread_mutex_destroy(&forks[i]);
 	//	pthread_mutex_destroy(&forks[(i + 1) % (int)philo->nb_philo]);
-	}
-		pthread_mutex_destroy(&philo->print_mutex);
+	pthread_mutex_destroy(&philo->print_mutex);
 	return (0);
 }
 
+/*This function was to check if all philo were well configured
 void	print_philo(t_philo *philo)
 {
 	int	i;
@@ -110,4 +114,4 @@ void	print_philo(t_philo *philo)
 		printf("start_living = %li\n", timestamp_in_ms(philo[i].start_living));
 		printf("______________________\n");
 	}
-}
+}*/

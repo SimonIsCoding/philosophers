@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 12:04:40 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/12 18:01:43 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/12 18:04:40 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int	init_threads(t_philo *philo)
 	i = -1;
 	thread = malloc(sizeof(pthread_t) * philo->nb_must_eat);
 	if (!thread)
-		return (-1);
+		return (write(2, "Error malloc\n", 14), -1);
 	pthread_mutex_init(&philo->print_mutex, NULL);
 	pthread_mutex_init(&philo->philo_is_dead, NULL);
 	while (++i < philo->nb_philo)

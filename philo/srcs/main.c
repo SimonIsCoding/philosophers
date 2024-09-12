@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 12:09:47 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/12 17:51:54 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/12 18:03:58 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,8 +98,10 @@ int	main(int argc, char **argv)
 	forks = init_mutexes_forks(philo);// to free once used
 	if (!philo || !forks)
 		return (1);
-	start_philosophing(philo);//=>init_threads
-	destroy_forks(philo, forks);
+	if (start_philosophing(philo) == -1)//=>init_threads
+		return (1);
+	if (destroy_forks(philo, forks) == -1)
+		return (1);
 	free(philo);
 	free(forks);
 	return (0);

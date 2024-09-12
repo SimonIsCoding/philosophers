@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 12:09:47 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/12 16:47:26 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/12 17:51:54 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,24 +50,23 @@
 ...
 */
 
-static void	dying_state_for_one_philo(t_philo *philo)
-{
-	precise_usleep(philo->time_to_die * 1000);
-	printf("\033[1;38;5;214m%li %li is dead ⚰️\033[0m\n",
-		timestamp_in_ms(philo->start_living), philo->thread_id);
-	return ;
-}
-
-int	start_philosophing(t_philo *philo, pthread_mutex_t *forks)
+static int	start_philosophing(t_philo *philo)
 {
 	if (philo->nb_philo == 1)
-		return (dying_state_for_one_philo(philo), 0);
-	if (init_threads(philo, forks) == -1)
+	{
+		pthread_mutex_lock(&philo->print_mutex);
+		precise_usleep(philo->time_to_die * 1000);
+		printf("\033[1;38;5;214m%li %li is dead ⚰️\033[0m\n",
+			timestamp_in_ms(philo->start_living), philo->thread_id);
+		pthread_mutex_unlock(&philo->print_mutex);
+		return (0);
+	}
+	if (init_threads(philo) == -1)
 		return (-1);
 	return (0);
 }
 
-int	destroy_forks(t_philo *philo, pthread_mutex_t *forks)
+static int	destroy_forks(t_philo *philo, pthread_mutex_t *forks)
 {
 	int	i;
 
@@ -80,15 +79,10 @@ int	destroy_forks(t_philo *philo, pthread_mutex_t *forks)
 	}
 	if (pthread_mutex_destroy(&philo->print_mutex) != 0)
 		return (-1);
+	if (pthread_mutex_destroy(&philo->philo_is_dead) != 0)
+		return (-1);
 	return (0);
 }
-
-// int	check_dead(t_philo *philo)
-// {
-// 	if (*(philo->dead_flag) == 1)
-// 		return (1);
-// 	return (0);
-// }
 
 int	main(int argc, char **argv)
 {
@@ -100,15 +94,11 @@ int	main(int argc, char **argv)
 	if (check_error(argc, argv) == 1)
 		return (1);
 	philo = init_philo_struct(argv, &dead_flag); // to free once used
+	philo->dead_flag = &dead_flag;
 	forks = init_mutexes_forks(philo);// to free once used
 	if (!philo || !forks)
 		return (1);
-	start_philosophing(philo, forks);//=>init_threads
-	// while (1)
-	// {
-	// 	if (check_dead(philo) == 1)
-	// 		break ;
-	// }
+	start_philosophing(philo);//=>init_threads
 	destroy_forks(philo, forks);
 	free(philo);
 	free(forks);

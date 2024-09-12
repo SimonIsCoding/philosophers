@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 12:04:40 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/12 16:48:58 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/12 18:01:43 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ t_philo	*init_philo_struct(char **argv, long *dead_flag)//to free once used
 	return (philo);
 }
 
-pthread_mutex_t *init_mutexes_forks(t_philo *philo)
+pthread_mutex_t	*init_mutexes_forks(t_philo *philo)//to free once used
 {
 	pthread_mutex_t	*forks;
 	int				i;
@@ -66,18 +66,20 @@ pthread_mutex_t *init_mutexes_forks(t_philo *philo)
 //une fois que tu initialises le mutex, il faut que tu le mettes dans ta 
 //structure philo comme ca tu definies le mutex correspondant a la fourchette
 //droite et gauche pour chaque philo
-//why it should be out of the while loop ?
-int init_threads(t_philo *philo, pthread_mutex_t *forks)
+//it takes more ms to create an array of threads with malloc
+int	init_threads(t_philo *philo)
 {
 	int			i;
-	pthread_t	thread[philo->nb_philo];
+	pthread_t	*thread;
 
 	i = -1;
+	thread = malloc(sizeof(pthread_t) * philo->nb_must_eat);
+	if (!thread)
+		return (-1);
 	pthread_mutex_init(&philo->print_mutex, NULL);
+	pthread_mutex_init(&philo->philo_is_dead, NULL);
 	while (++i < philo->nb_philo)
 	{
-//		if (philo->thread_id % 2 == 0)
-//			usleep(1);
 		if (pthread_create(&thread[i], NULL, &philo_routine, &philo[i]) == -1)
 			return (-1);
 	}
@@ -87,10 +89,7 @@ int init_threads(t_philo *philo, pthread_mutex_t *forks)
 		if (pthread_join(thread[i], NULL) == -1)
 			return (-1);
 	}
-	i = -1;
-	while (++i < philo->nb_philo)
-		pthread_mutex_destroy(&forks[i]);
-	pthread_mutex_destroy(&philo->print_mutex);
+	free(thread);
 	return (0);
 }
 

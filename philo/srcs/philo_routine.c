@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 13:58:52 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/12 16:39:15 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/12 17:47:10 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,18 +22,16 @@ static int	break_conditions(t_philo *philo)
 		printf("\033[1;38;5;214m%li %li is dead ⚰️\033[0m\n",
 			timestamp_in_ms(philo->start_living), philo->thread_id);
 		pthread_mutex_unlock(&philo->print_mutex);
-		// pthread_mutex_lock(&philo->philo_is_dead);
-		// *(philo->dead_flag) = 1L;
-		// pthread_mutex_unlock(&philo->philo_is_dead);
+		pthread_mutex_lock(&philo->philo_is_dead);
+		*(philo->dead_flag) = 1L;
+		pthread_mutex_unlock(&philo->philo_is_dead);
 		return (1);
 	}
 	return (0);
 }
 
-void	eat(t_philo *philo)
+static void	pick_correct_fork(t_philo *philo)
 {
-	struct timeval	reset;
-
 	if (philo->left_fork < philo->right_fork)
 	{
 		pthread_mutex_lock(philo->left_fork);
@@ -44,13 +42,20 @@ void	eat(t_philo *philo)
 		pthread_mutex_lock(philo->right_fork);
 		pthread_mutex_lock(philo->left_fork);
 	}
+}
+
+static void	eat(t_philo *philo)
+{
+	struct timeval	reset;
+
+	pick_correct_fork(philo);
 	pthread_mutex_lock(&philo->print_mutex);
 	printf("\033[1;38;5;196m%li %li has taken a fork\033[0m\n",
-		timestamp_in_ms(philo->start_living), philo->thread_id);//1°  🍴
+		timestamp_in_ms(philo->start_living), philo->thread_id);
 	printf("\033[1;38;5;196m%li %li has taken a fork\033[0m\n",
-		timestamp_in_ms(philo->start_living), philo->thread_id);//2°  🍴
+		timestamp_in_ms(philo->start_living), philo->thread_id);
 	printf("\033[1;38;5;93m%li %li is eating\033[0m\n",
-		timestamp_in_ms(philo->start_living), philo->thread_id);// 🍝
+		timestamp_in_ms(philo->start_living), philo->thread_id);
 	precise_usleep(philo->time_to_eat * 1000);
 	gettimeofday(&reset, NULL);
 	philo->time_last_meal = reset;
@@ -60,34 +65,30 @@ void	eat(t_philo *philo)
 	pthread_mutex_unlock(&philo->print_mutex);
 }
 
-void	philo_sleep(t_philo *philo)
+static void	philo_sleep(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->print_mutex);
 	printf("\033[1;38;5;46m%li %li is sleeping\033[0m\n",
-		timestamp_in_ms(philo->start_living), philo->thread_id);// 😴
+		timestamp_in_ms(philo->start_living), philo->thread_id);
 	precise_usleep(philo->time_to_sleep * 1000);
 	pthread_mutex_unlock(&philo->print_mutex);
 }
 
-void	think(t_philo *philo)
+static void	think(t_philo *philo)
 {
 	if (philo->nb_philo % 2 == 0 && philo->time_to_eat > philo->time_to_sleep)
 	{
 		pthread_mutex_lock(&philo->print_mutex);
-		
 		printf("\033[1;38;5;21m%li %li is thinking\033[0m\n",
-			timestamp_in_ms(philo->start_living), philo->thread_id);// 💭
-			
+			timestamp_in_ms(philo->start_living), philo->thread_id);
 		precise_usleep((philo->time_to_eat - philo->time_to_sleep) * 1000);
 		pthread_mutex_unlock(&philo->print_mutex);
 	}
 	if (philo->nb_philo % 2 == 1)
 	{
 		pthread_mutex_lock(&philo->print_mutex);
-		
 		printf("\033[1;38;5;21m%li %li is thinking\033[0m\n",
-			timestamp_in_ms(philo->start_living), philo->thread_id);// 💭
-			
+			timestamp_in_ms(philo->start_living), philo->thread_id);
 		precise_usleep((philo->time_to_eat * 2 - philo->time_to_sleep) * 1000);
 		pthread_mutex_unlock(&philo->print_mutex);
 	}
@@ -100,13 +101,13 @@ void *philo_routine(void *arg)
 	philo = (t_philo *)arg;
 	while(1)
 	{
-//		pthread_mutex_lock(&philo->philo_is_dead);
+		pthread_mutex_lock(&philo->philo_is_dead);
 		if (break_conditions(philo) == 1)
 		{
-//			pthread_mutex_unlock(&philo->philo_is_dead);
+			pthread_mutex_unlock(&philo->philo_is_dead);
 			break ;
 		}	
-//		pthread_mutex_unlock(&philo->philo_is_dead);
+		pthread_mutex_unlock(&philo->philo_is_dead);
 		eat(philo);
 		philo_sleep(philo);
 		think(philo);

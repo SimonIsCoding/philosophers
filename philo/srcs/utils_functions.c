@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 16:57:08 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/06 16:05:25 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/12 13:20:27 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,64 +61,4 @@ int	ft_atoi(const char *str)
 	while (str[i] >= 48 && str[i] <= 57)
 		a = a * 10 + (str[i++] - 48);
 	return (a * sign);
-}
-
-char	*ft_strdup(const char *str)
-{
-	char	*dst;
-	size_t	i;
-
-	i = -1;
-	dst = (char *)malloc((ft_strlen(str) + 1) * sizeof(char));
-	if (!dst)
-		return (NULL);
-	while (str[++i] != '\0')
-		dst[i] = str[i];
-	dst[i] = '\0';
-	return (dst);
-}
-
-static size_t	ft_ctr(long num)
-{
-	size_t	ctr;
-
-	ctr = 0;
-	while (num < 0)
-	{
-		num *= -1;
-		ctr++;
-	}
-	while (num > 0)
-	{
-		num /= 10;
-		ctr++;
-	}
-	return (ctr);
-}
-
-char	*ft_itoa(int n)
-{
-	char	*str;
-	long	tmp;
-	size_t	len;
-
-	tmp = n;
-	len = ft_ctr(tmp);
-	if (n == 0)
-		return (ft_strdup("0"));
-	str = malloc((len + 1) * (sizeof(char)));
-	if (!str)
-		return (NULL);
-	str[len--] = '\0';
-	if (tmp < 0)
-	{
-		tmp *= -1;
-		str[0] = '-';
-	}
-	while (tmp > 0)
-	{
-		str[len--] = (tmp % 10) + '0';
-		tmp /= 10;
-	}
-	return (str);
 }

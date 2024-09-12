@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 13:58:52 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/12 11:59:10 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/12 16:39:15 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,9 @@ static int	break_conditions(t_philo *philo)
 		printf("\033[1;38;5;214m%li %li is dead ⚰️\033[0m\n",
 			timestamp_in_ms(philo->start_living), philo->thread_id);
 		pthread_mutex_unlock(&philo->print_mutex);
-//		*(philo->dead_flag) = 1L;
+		// pthread_mutex_lock(&philo->philo_is_dead);
+		// *(philo->dead_flag) = 1L;
+		// pthread_mutex_unlock(&philo->philo_is_dead);
 		return (1);
 	}
 	return (0);
@@ -98,13 +100,13 @@ void *philo_routine(void *arg)
 	philo = (t_philo *)arg;
 	while(1)
 	{
-		pthread_mutex_lock(&philo->philo_is_dead);
+//		pthread_mutex_lock(&philo->philo_is_dead);
 		if (break_conditions(philo) == 1)
 		{
-			pthread_mutex_unlock(&philo->philo_is_dead);
+//			pthread_mutex_unlock(&philo->philo_is_dead);
 			break ;
 		}	
-		pthread_mutex_unlock(&philo->philo_is_dead);
+//		pthread_mutex_unlock(&philo->philo_is_dead);
 		eat(philo);
 		philo_sleep(philo);
 		think(philo);

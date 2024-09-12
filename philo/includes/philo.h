@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 11:59:17 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/12 11:59:34 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/12 16:37:55 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,6 @@
 # define ERROR_MSG		"$>./philo number_of_philosophers time_to_die\
  time_to_eat time_to_sleep [number_of_times_each_philosopher_must_eat]\n"
 
-//COLORS
-# define BOLD_RED "\033[1;31m"
-# define RESET	"\033[0m"
-
 typedef struct philo
 {
 	long			thread_id;
@@ -42,40 +38,38 @@ typedef struct philo
 	pthread_mutex_t	*left_fork;//at least one has to be a pointer
 	pthread_mutex_t	*right_fork;
 	pthread_mutex_t	print_mutex;
-	pthread_mutex_t	philo_is_dead;
+//	pthread_mutex_t	philo_is_dead;
 //	long			*dead_flag;//0 if all philo are alive, 1 if one died
 }				t_philo;
 
 //utils_functions.c
-int			ft_isdigit(int c);
-int			ft_strcmp(const char *s1, const char *s2);
-size_t		ft_strlen(const char *s);
-int			ft_atoi(const char *str);
-char		*ft_itoa(int n);
-
+int				ft_isdigit(int c);
+int				ft_strcmp(const char *s1, const char *s2);
+size_t			ft_strlen(const char *s);
+int				ft_atoi(const char *str);
 
 //parsing.c
-int		check_error(int argc, char **argv);
+int				check_error(int argc, char **argv);
 
 //custom_usleep.c
-long	get_elapsed_time_microseconds(struct timeval start,
+long			get_elapsed_time_microseconds(struct timeval start,
 						struct timeval end);
-void	precise_usleep(long usec);
-long	timestamp_in_ms(struct timeval start);
+void			precise_usleep(long usec);
+long			timestamp_in_ms(struct timeval start);
 
 //philo_states.c
-void	dying_state_for_one_philo(t_philo *philo);
-
-//main.c
+//void			dying_state_for_one_philo(t_philo *philo);
 
 //init.c
-t_philo			*init_philo_struct(char **argv);//to free once used
+t_philo			*init_philo_struct(char **argv, long *dead_flag);//to free once used
 int 			init_threads(t_philo *philo, pthread_mutex_t *forks);
 pthread_mutex_t *init_mutexes_forks(t_philo *philo);
 
-//void	print_philo(t_philo *philo);
+//void			print_philo(t_philo *philo);
 
 //philo_routine.c
-void 	*philo_routine(void *arg);
+void 			*philo_routine(void *arg);
+
+//main.c
 
 # endif

@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 12:09:47 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/12 12:00:09 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/12 16:47:26 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,15 @@
 ...
 */
 
-int start_philosophing(t_philo *philo, pthread_mutex_t *forks)
+static void	dying_state_for_one_philo(t_philo *philo)
+{
+	precise_usleep(philo->time_to_die * 1000);
+	printf("\033[1;38;5;214m%li %li is dead ⚰️\033[0m\n",
+		timestamp_in_ms(philo->start_living), philo->thread_id);
+	return ;
+}
+
+int	start_philosophing(t_philo *philo, pthread_mutex_t *forks)
 {
 	if (philo->nb_philo == 1)
 		return (dying_state_for_one_philo(philo), 0);
@@ -75,21 +83,34 @@ int	destroy_forks(t_philo *philo, pthread_mutex_t *forks)
 	return (0);
 }
 
-int main(int argc, char **argv)
+// int	check_dead(t_philo *philo)
+// {
+// 	if (*(philo->dead_flag) == 1)
+// 		return (1);
+// 	return (0);
+// }
+
+int	main(int argc, char **argv)
 {
 	t_philo			*philo;
 	pthread_mutex_t	*forks;
-//	long			dead_flag;
+	long			dead_flag;
 
+	dead_flag = 0;
 	if (check_error(argc, argv) == 1)
 		return (1);
-	philo = init_philo_struct(argv); // to free once used
-//	print_philo(philo);
+	philo = init_philo_struct(argv, &dead_flag); // to free once used
 	forks = init_mutexes_forks(philo);// to free once used
-	start_philosophing(philo, forks); //=>init_threads
+	if (!philo || !forks)
+		return (1);
+	start_philosophing(philo, forks);//=>init_threads
+	// while (1)
+	// {
+	// 	if (check_dead(philo) == 1)
+	// 		break ;
+	// }
 	destroy_forks(philo, forks);
 	free(philo);
 	free(forks);
 	return (0);
 }
-//check leaks

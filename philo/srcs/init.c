@@ -6,23 +6,24 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 12:04:40 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/12 11:59:23 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/12 16:48:58 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-t_philo	*init_philo_struct(char **argv)//to free once used
+t_philo	*init_philo_struct(char **argv, long *dead_flag)//to free once used
 {
 	int				philo_nb;
 	t_philo			*philo;
 	struct timeval	start;
 	int				i;
 
+	(void)dead_flag;
 	philo_nb = ft_atoi(argv[1]);
 	philo = malloc(sizeof(t_philo) * philo_nb);
 	if (!philo)
-		return (write(2, "Error malloc - main.c l.184\n", 29), NULL);
+		return (write(2, "Error malloc", 14), NULL);
 	i = -1;
 	while (++i < philo_nb)
 	{
@@ -49,10 +50,9 @@ pthread_mutex_t *init_mutexes_forks(t_philo *philo)
 	pthread_mutex_t	*forks;
 	int				i;
 
-	//	pthread_mutex_init(&philo->print_mutex, NULL);
 	forks = malloc(sizeof(pthread_mutex_t) * philo->nb_philo);
 	if (!forks)
-		return (NULL);
+		return (write(2, "Error malloc\n", 14), NULL);
 	i = -1;
 	while (++i < philo->nb_philo)
 	{
@@ -63,23 +63,21 @@ pthread_mutex_t *init_mutexes_forks(t_philo *philo)
 	return (forks);
 }
 
-//une fois que tu initialises le mutex, il faut que tu le mettes dans ta structure philo
-//comme ca tu definies le mutex correspondant a la fourchette droite et gauche pour chaque philo
+//une fois que tu initialises le mutex, il faut que tu le mettes dans ta 
+//structure philo comme ca tu definies le mutex correspondant a la fourchette
+//droite et gauche pour chaque philo
+//why it should be out of the while loop ?
 int init_threads(t_philo *philo, pthread_mutex_t *forks)
 {
-	int 		i;
+	int			i;
 	pthread_t	thread[philo->nb_philo];
 
 	i = -1;
-	//(void)forks;
-		pthread_mutex_init(&philo->print_mutex, NULL);//why it should be out of the while loop ?
+	pthread_mutex_init(&philo->print_mutex, NULL);
 	while (++i < philo->nb_philo)
 	{
-		if (philo->thread_id % 2 == 0)
-		{
-			usleep(1);
-			//sleep(5);
-		}
+//		if (philo->thread_id % 2 == 0)
+//			usleep(1);
 		if (pthread_create(&thread[i], NULL, &philo_routine, &philo[i]) == -1)
 			return (-1);
 	}
@@ -92,7 +90,6 @@ int init_threads(t_philo *philo, pthread_mutex_t *forks)
 	i = -1;
 	while (++i < philo->nb_philo)
 		pthread_mutex_destroy(&forks[i]);
-	//	pthread_mutex_destroy(&forks[(i + 1) % (int)philo->nb_philo]);
 	pthread_mutex_destroy(&philo->print_mutex);
 	return (0);
 }

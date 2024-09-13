@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 12:09:47 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/13 14:44:17 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/13 16:43:39 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,11 +75,11 @@ static int	destroy_forks(t_philo *philo, pthread_mutex_t *forks)
 	{
 		if (pthread_mutex_destroy(&forks[i]) != 0)
 			return (-1);
+//		pthread_mutex_destroy(&philo[i].dead_flag_mutex);
 		i++;
 	}
 	if (pthread_mutex_destroy(&philo->print_mutex) != 0)
 		return (-1);
-	pthread_mutex_destroy(&philo->dead_flag_mutex);
 	return (0);
 }
 
@@ -87,7 +87,7 @@ int	main(int argc, char **argv)
 {
 	t_philo			*philo;
 	pthread_mutex_t	*forks;
-	long			dead_flag;
+	int				dead_flag;
 
 	dead_flag = 0;
 	if (check_error(argc, argv) == 1)

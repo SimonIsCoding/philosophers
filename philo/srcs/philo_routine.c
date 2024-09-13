@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 13:58:52 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/12 17:47:10 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/13 15:06:50 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,19 @@
 
 static int	break_conditions(t_philo *philo)
 {
+	if (*(philo->dead_flag) == 1L)
+		return (1);
 	if (philo->nb_must_eat != -1 && philo->eating_times >= philo->nb_must_eat)
 		return (1);
 	else if (timestamp_in_ms(philo->time_last_meal) >= philo->time_to_die)
 	{
+		pthread_mutex_lock(&philo->dead_flag_mutex);
 		pthread_mutex_lock(&philo->print_mutex);
-		printf("\033[1;38;5;214m%li %li is dead ⚰️\033[0m\n",
+		printf("\033[1;38;5;214m%li %li is dead\033[0m\n",
 			timestamp_in_ms(philo->start_living), philo->thread_id);
 		pthread_mutex_unlock(&philo->print_mutex);
-		pthread_mutex_lock(&philo->philo_is_dead);
 		*(philo->dead_flag) = 1L;
-		pthread_mutex_unlock(&philo->philo_is_dead);
+		pthread_mutex_unlock(&philo->dead_flag_mutex);
 		return (1);
 	}
 	return (0);
@@ -101,16 +103,36 @@ void *philo_routine(void *arg)
 	philo = (t_philo *)arg;
 	while(1)
 	{
-		pthread_mutex_lock(&philo->philo_is_dead);
 		if (break_conditions(philo) == 1)
-		{
-			pthread_mutex_unlock(&philo->philo_is_dead);
 			break ;
-		}	
-		pthread_mutex_unlock(&philo->philo_is_dead);
 		eat(philo);
 		philo_sleep(philo);
 		think(philo);
 	}
 	return (NULL);
 }
+
+/*void	*check_all_alive(void *arg)
+{
+	t_philo	*philo;
+
+	philo = (t_philo *)arg;
+	while (1)
+	{
+//		pthread_mutex_lock(&philo->meal_mutex);
+		if (timestamp_in_ms(philo->time_last_meal) >= philo->time_to_die)
+		{
+			pthread_mutex_lock(&philo->print_mutex);
+			printf("\033[1;38;5;214m%li %li is dead ⚰️\033[0m\n",
+				timestamp_in_ms(philo->start_living), philo->thread_id);
+//			pthread_mutex_unlock(&philo->print_mutex);
+//			pthread_mutex_lock(&philo->dead_flag_mutex);
+			*(philo->dead_flag) = 1L;
+//			pthread_mutex_unlock(&philo->dead_flag_mutex);
+//			pthread_mutex_unlock(&philo->meal_mutex);
+			break ;
+		}
+//		pthread_mutex_unlock(&philo->meal_mutex);
+	}
+	return (NULL);
+}*/

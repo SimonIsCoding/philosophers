@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 11:59:17 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/12 17:51:14 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/13 14:43:01 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,9 @@ typedef struct philo
 	pthread_mutex_t	*left_fork;//at least one has to be a pointer
 	pthread_mutex_t	*right_fork;
 	pthread_mutex_t	print_mutex;
-	pthread_mutex_t	philo_is_dead;
+	pthread_mutex_t	dead_flag_mutex;
 	long			*dead_flag;//0 if all philo are alive, 1 if one died
-}				t_philo;
+}	t_philo;
 
 //utils_functions.c
 int				ft_isdigit(int c);
@@ -60,11 +60,13 @@ long			timestamp_in_ms(struct timeval start);
 //init.c
 t_philo			*init_philo_struct(char **argv, long *dead_flag);//to free
 int				init_threads(t_philo *philo);
-pthread_mutex_t	*init_mutexes_forks(t_philo *philo);
+pthread_mutex_t	*init_forks(t_philo *philo);
 //void			print_philo(t_philo *philo);
 
 //philo_routine.c
 void			*philo_routine(void *arg);
+void			*check_all_alive(void *arg);
+
 
 //main.c
 

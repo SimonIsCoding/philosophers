@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 12:04:40 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/12 18:04:40 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/13 14:50:59 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,10 @@ t_philo	*init_philo_struct(char **argv, long *dead_flag)//to free once used
 	struct timeval	start;
 	int				i;
 
-	(void)dead_flag;
 	philo_nb = ft_atoi(argv[1]);
 	philo = malloc(sizeof(t_philo) * philo_nb);
 	if (!philo)
-		return (write(2, "Error malloc", 14), NULL);
+		return (write(2, "Error malloc", 13), NULL);
 	i = -1;
 	while (++i < philo_nb)
 	{
@@ -40,19 +39,19 @@ t_philo	*init_philo_struct(char **argv, long *dead_flag)//to free once used
 		philo[i].start_living = start;
 		philo[i].time_last_meal = start;
 		philo[i].eating_times = 0;
-//		philo[i].dead_flag = dead_flag;
+		philo[i].dead_flag = dead_flag;
 	}
 	return (philo);
 }
 
-pthread_mutex_t	*init_mutexes_forks(t_philo *philo)//to free once used
+pthread_mutex_t	*init_forks(t_philo *philo)//to free once used
 {
 	pthread_mutex_t	*forks;
 	int				i;
 
 	forks = malloc(sizeof(pthread_mutex_t) * philo->nb_philo);
 	if (!forks)
-		return (write(2, "Error malloc\n", 14), NULL);
+		return (write(2, "Error malloc\n", 13), NULL);
 	i = -1;
 	while (++i < philo->nb_philo)
 	{
@@ -73,11 +72,11 @@ int	init_threads(t_philo *philo)
 	pthread_t	*thread;
 
 	i = -1;
-	thread = malloc(sizeof(pthread_t) * philo->nb_must_eat);
+	thread = malloc(sizeof(pthread_t) * philo->nb_philo);
 	if (!thread)
-		return (write(2, "Error malloc\n", 14), -1);
+		return (write(2, "Error malloc\n", 13), -1);
 	pthread_mutex_init(&philo->print_mutex, NULL);
-	pthread_mutex_init(&philo->philo_is_dead, NULL);
+	pthread_mutex_init(&philo->dead_flag_mutex, NULL);
 	while (++i < philo->nb_philo)
 	{
 		if (pthread_create(&thread[i], NULL, &philo_routine, &philo[i]) == -1)

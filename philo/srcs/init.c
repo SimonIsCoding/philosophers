@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 12:04:40 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/13 16:52:18 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/13 18:01:44 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ pthread_mutex_t	*init_forks(t_philo *philo)//to free once used
 	while (++i < philo->nb_philo)
 	{
 		pthread_mutex_init(&forks[i], NULL);
+		pthread_mutex_init(&philo[i]->monitor->mutex, NULL);
 //		pthread_mutex_init(&philo[i].dead_flag_mutex, NULL);
 		philo[i].left_fork = &forks[i];
 		philo[i].right_fork = &forks[(i + 1) % philo->nb_philo];
@@ -93,12 +94,18 @@ int	init_threads(t_philo *philo)
 	{
 		if (pthread_create(&thread[i], NULL, &philo_routine, &philo[i]) == -1)
 			return (-1);
+		printf("i = %i\n", i);
+		printf("philo->nb_philo = %li\n", philo->nb_philo);
 	}
+		printf("i = %i\n", i);
 	
-	if (pthread_join(*thread_observer, NULL) == -1)
-		return (-1);
 		
 	i = -1;
+		printf("i = %i\n", i);
+	//IL Y A UN PROBLEME 
+	if (pthread_join(*thread_observer, NULL) == -1)
+		return (-1);
+
 	while (++i < philo->nb_philo)
 	{
 		if (pthread_join(thread[i], NULL) == -1)

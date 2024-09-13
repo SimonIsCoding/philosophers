@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 12:09:47 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/13 16:43:39 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/13 17:59:28 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ static int	destroy_forks(t_philo *philo, pthread_mutex_t *forks)
 	}
 	if (pthread_mutex_destroy(&philo->print_mutex) != 0)
 		return (-1);
+	pthread_mutex_destroy(&philo->monitor->mutex);
 	return (0);
 }
 
@@ -96,10 +97,13 @@ int	main(int argc, char **argv)
 	forks = init_forks(philo);// to free once used
 	if (!philo || !forks)
 		return (2);
+	printf("before starting philosophing\n");
 	if (start_philosophing(philo) == -1)//=>init_threads
 		return (3);
+	printf("before destroying the forks\n");
 	if (destroy_forks(philo, forks) == -1)
 		return (4);
+	printf("after destroying the forks\n");
 	free(philo);
 	free(forks);
 	return (0);

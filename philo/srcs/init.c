@@ -6,20 +6,20 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 12:04:40 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/13 18:01:44 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/15 19:20:14 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-t_philo	*init_philo_struct(char **argv, int *dead_flag)//to free once used
+t_philo	*init_philo_struct(char **argv, long *dead_flag)//to free once used
 {
 	int				philo_nb;
 	t_philo			*philo;
 	struct timeval	start;
 	int				i;
 
-//	(void)dead_flag;
+	(void)dead_flag;
 	philo_nb = ft_atoi(argv[1]);
 	philo = malloc(sizeof(t_philo) * philo_nb);
 	if (!philo)
@@ -36,15 +36,17 @@ t_philo	*init_philo_struct(char **argv, int *dead_flag)//to free once used
 			philo[i].nb_must_eat = ft_atoi(argv[5]);
 		else
 			philo[i].nb_must_eat = -1;
-		philo[i].monitor = malloc(sizeof(t_monitor));
-		if (!philo[i].monitor)
-			return (write(2, "Error malloc", 13), NULL);
-		philo[i].monitor->dead_flag = dead_flag;
+		philo[i].dead_flag = malloc(sizeof(long));
+		*(philo[i].dead_flag) = 0L;
+		philo[i].dead_flag_mutex = malloc(sizeof(pthread_mutex_t));
+		pthread_mutex_init(philo[i].dead_flag_mutex, NULL);
 		gettimeofday(&start, NULL);
 		philo[i].start_living = start;
 		philo[i].time_last_meal = start;
 		philo[i].eating_times = 0;
-//		philo[i].dead_flag = dead_flag;
+
+
+	//	philo[i].dead_flag = dead_flag;
 	}
 	return (philo);
 }
@@ -61,8 +63,6 @@ pthread_mutex_t	*init_forks(t_philo *philo)//to free once used
 	while (++i < philo->nb_philo)
 	{
 		pthread_mutex_init(&forks[i], NULL);
-		pthread_mutex_init(&philo[i]->monitor->mutex, NULL);
-//		pthread_mutex_init(&philo[i].dead_flag_mutex, NULL);
 		philo[i].left_fork = &forks[i];
 		philo[i].right_fork = &forks[(i + 1) % philo->nb_philo];
 	}
@@ -77,43 +77,29 @@ int	init_threads(t_philo *philo)
 {
 	int			i;
 	pthread_t	*thread;
-	pthread_t	*thread_observer;
-	t_monitor	*monitor;
 
 	i = -1;
 	thread = malloc(sizeof(pthread_t) * philo->nb_philo);
-	thread_observer = malloc(sizeof(pthread_t));
-	monitor = malloc(sizeof(t_monitor));
+	philo->observer = malloc(sizeof(pthread_t));
 	if (!thread)
 		return (write(2, "Error malloc\n", 13), -1);
 	pthread_mutex_init(&philo->print_mutex, NULL);
-//	pthread_mutex_init(&philo->dead_flag_mutex, NULL);
-	if (pthread_create(thread_observer, NULL, &observer_routine, &monitor) == -1)
+	if (pthread_create(philo->observer, NULL, &observer_routine, &philo[0]) == -1)
 		return (-1);
 	while (++i < philo->nb_philo)
 	{
 		if (pthread_create(&thread[i], NULL, &philo_routine, &philo[i]) == -1)
 			return (-1);
-		printf("i = %i\n", i);
-		printf("philo->nb_philo = %li\n", philo->nb_philo);
 	}
-		printf("i = %i\n", i);
-	
-		
-	i = -1;
-		printf("i = %i\n", i);
-	//IL Y A UN PROBLEME 
-	if (pthread_join(*thread_observer, NULL) == -1)
+	if (pthread_join(*philo->observer, NULL) == -1)
 		return (-1);
-
+	i = -1;
 	while (++i < philo->nb_philo)
 	{
 		if (pthread_join(thread[i], NULL) == -1)
 			return (-1);
 	}
 	free(thread);
-	free(thread_observer);
-	free(monitor);
 	return (0);
 }
 

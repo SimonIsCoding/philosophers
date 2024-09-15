@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 12:09:47 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/13 17:59:28 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/15 19:18:12 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,8 @@ static int	destroy_forks(t_philo *philo, pthread_mutex_t *forks)
 	}
 	if (pthread_mutex_destroy(&philo->print_mutex) != 0)
 		return (-1);
-	pthread_mutex_destroy(&philo->monitor->mutex);
+	if (pthread_mutex_destroy(philo->dead_flag_mutex) != 0)
+		return (-1);
 	return (0);
 }
 
@@ -88,23 +89,25 @@ int	main(int argc, char **argv)
 {
 	t_philo			*philo;
 	pthread_mutex_t	*forks;
-	int				dead_flag;
+	long			dead_flag;
 
 	dead_flag = 0;
 	if (check_error(argc, argv) == 1)
 		return (1);
-	philo = init_philo_struct(argv, &dead_flag); // to free once used
-	forks = init_forks(philo);// to free once used
+	philo = init_philo_struct(argv, &dead_flag);//to free once used
+	forks = init_forks(philo);//to free once used
 	if (!philo || !forks)
 		return (2);
-	printf("before starting philosophing\n");
-	if (start_philosophing(philo) == -1)//=>init_threads
-		return (3);
-	printf("before destroying the forks\n");
-	if (destroy_forks(philo, forks) == -1)
-		return (4);
-	printf("after destroying the forks\n");
+	start_philosophing(philo);//=>init_threads
+	destroy_forks(philo, forks);
 	free(philo);
 	free(forks);
 	return (0);
 }
+
+	// printf("before starting philosophing\n");
+	// printf("before destroying the forks\n");
+	// printf("after destroying the forks\n");
+	// 	return (3);
+		// return (4);
+

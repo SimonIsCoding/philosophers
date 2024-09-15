@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 11:59:17 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/13 16:43:23 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/15 19:47:54 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,8 @@
 # include <sys/time.h>
 # include <pthread.h>
 
-# define MALLOC_ERROR	3
 # define ERROR_MSG		"$>./philo number_of_philosophers time_to_die\
  time_to_eat time_to_sleep [number_of_times_each_philosopher_must_eat]\n"
-
-typedef struct monitor
-{
-	pthread_t		observer;
-	pthread_mutex_t	mutex;
-	int				*dead_flag;
-}	t_monitor;
 
 typedef struct philo
 {
@@ -45,9 +37,9 @@ typedef struct philo
 	pthread_mutex_t	*left_fork;//at least one has to be a pointer
 	pthread_mutex_t	*right_fork;
 	pthread_mutex_t	print_mutex;
-	t_monitor		*monitor;
-//	pthread_mutex_t	dead_flag_mutex;
-//	long			*dead_flag;//0 if all philo are alive, 1 if one died
+	pthread_t		*observer;
+	pthread_mutex_t	*dead_flag_mutex;
+	long			*dead_flag;//0 if all philo are alive, 1 if one died
 }	t_philo;
 
 //utils_functions.c
@@ -60,13 +52,11 @@ int				ft_atoi(const char *str);
 int				check_error(int argc, char **argv);
 
 //custom_usleep.c
-long			get_elapsed_time_microseconds(struct timeval start,
-					struct timeval end);
 void			precise_usleep(long usec);
 long			timestamp_in_ms(struct timeval start);
 
 //init.c
-t_philo			*init_philo_struct(char **argv, int *dead_flag);//to free
+t_philo			*init_philo_struct(char **argv, long *dead_flag);//to free
 int				init_threads(t_philo *philo);
 pthread_mutex_t	*init_forks(t_philo *philo);
 //void			print_philo(t_philo *philo);
@@ -76,5 +66,6 @@ void			*philo_routine(void *arg);
 void			*observer_routine(void *arg);
 
 //main.c
+//int	main(int argc, char **argv);
 
 #endif

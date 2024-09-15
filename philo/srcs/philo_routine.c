@@ -6,11 +6,23 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 13:58:52 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/13 16:48:05 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/15 19:57:50 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
+
+int	check_all_philo_are_alive(t_philo *philo)
+{
+	pthread_mutex_lock(philo->dead_flag_mutex);
+	if (*philo->dead_flag == 1L)
+	{
+		pthread_mutex_unlock(philo->dead_flag_mutex);
+		return (1);
+	}
+	pthread_mutex_unlock(philo->dead_flag_mutex);
+	return (0);
+}
 
 static int	break_conditions(t_philo *philo)
 {
@@ -22,9 +34,9 @@ static int	break_conditions(t_philo *philo)
 		printf("\033[1;38;5;214m%li %li is dead\033[0m\n",
 			timestamp_in_ms(philo->start_living), philo->thread_id);
 		pthread_mutex_unlock(&philo->print_mutex);
-		pthread_mutex_lock(&philo->monitor->mutex);
-		*(philo->monitor->dead_flag) = 1;
-		pthread_mutex_unlock(&philo->monitor->mutex);
+		pthread_mutex_lock(philo->dead_flag_mutex);
+		*(philo->dead_flag) = 1;
+		pthread_mutex_unlock(philo->dead_flag_mutex);
 		return (1);
 	}
 	return (0);
@@ -104,21 +116,32 @@ void *philo_routine(void *arg)
 		if (break_conditions(philo) == 1)
 			break ;
 		eat(philo);
+		if (check_all_philo_are_alive(philo) == 1)
+			break ;
 		philo_sleep(philo);
+		if (check_all_philo_are_alive(philo) == 1)
+			break ;
 		think(philo);
+		if (check_all_philo_are_alive(philo) == 1)
+			break ;
 	}
 	return (NULL);
 }
 
 void	*observer_routine(void *arg)
 {
-	t_monitor	*monitor;
+	t_philo	*philo;
 
-	monitor = (t_monitor *)arg;
+	philo = (t_philo *)arg;
 	while (1)
 	{
-		if (*(monitor->dead_flag) == 1)
+		pthread_mutex_lock(philo->dead_flag_mutex);
+		if (*philo->dead_flag == 1L)
+		{
+			pthread_mutex_unlock(philo->dead_flag_mutex);
 			break ;
+		}
+		pthread_mutex_unlock(philo->dead_flag_mutex);
 	}
 	return (NULL);
 }

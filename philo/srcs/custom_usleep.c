@@ -6,13 +6,13 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 12:23:51 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/05 12:08:11 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/15 19:47:00 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-long	get_elapsed_time_microseconds(struct timeval start,
+static long	get_elapsed_time_microseconds(struct timeval start,
 						struct timeval end)
 {
 	return ((end.tv_sec - start.tv_sec) * 1000000L

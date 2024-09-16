@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 13:58:52 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/15 19:57:50 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/16 12:36:15 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,13 @@ static int	break_conditions(t_philo *philo)
 		return (1);
 	if (timestamp_in_ms(philo->time_last_meal) >= philo->time_to_die)
 	{
+		pthread_mutex_lock(philo->dead_flag_mutex);
+		*(dead_flag) = 1;
+		pthread_mutex_unlock(philo->dead_flag_mutex);
 		pthread_mutex_lock(&philo->print_mutex);
 		printf("\033[1;38;5;214m%li %li is dead\033[0m\n",
 			timestamp_in_ms(philo->start_living), philo->thread_id);
 		pthread_mutex_unlock(&philo->print_mutex);
-		pthread_mutex_lock(philo->dead_flag_mutex);
-		*(philo->dead_flag) = 1;
-		pthread_mutex_unlock(philo->dead_flag_mutex);
 		return (1);
 	}
 	return (0);
@@ -79,6 +79,11 @@ static void	eat(t_philo *philo)
 
 static void	philo_sleep(t_philo *philo)
 {
+	printf("philo->thread_id = %li\n", philo->thread_id);
+	printf("memory address philo->dead_flag = %p\n", &philo->dead_flag);
+	printf("philo->dead_flag = %li\n", *philo->dead_flag);
+	if (check_all_philo_are_alive(philo) == 1)
+		return ;
 	pthread_mutex_lock(&philo->print_mutex);
 	printf("\033[1;38;5;46m%li %li is sleeping\033[0m\n",
 		timestamp_in_ms(philo->start_living), philo->thread_id);
@@ -88,6 +93,11 @@ static void	philo_sleep(t_philo *philo)
 
 static void	think(t_philo *philo)
 {
+	printf("philo->thread_id = %li\n", philo->thread_id);
+	printf("memory address philo->dead_flag = %p\n", &philo->dead_flag);
+	printf("philo->dead_flag = %li\n", *philo->dead_flag);
+	if (check_all_philo_are_alive(philo) == 1)
+		return ;
 	if (philo->nb_philo % 2 == 0 && philo->time_to_eat > philo->time_to_sleep)
 	{
 		pthread_mutex_lock(&philo->print_mutex);

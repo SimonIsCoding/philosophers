@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 11:59:17 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/15 19:47:54 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/16 12:56:44 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ pthread_mutex_t	*init_forks(t_philo *philo);
 //philo_routine.c
 void			*philo_routine(void *arg);
 void			*observer_routine(void *arg);
+int	check_all_philo_are_alive(t_philo *philo);
 
 //main.c
 //int	main(int argc, char **argv);

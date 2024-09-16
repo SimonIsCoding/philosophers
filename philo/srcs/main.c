@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 12:09:47 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/15 19:18:12 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/16 12:34:25 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,9 @@
 ...
 */
 
-static int	start_philosophing(t_philo *philo)
+static int	start_philosophing(t_philo *philo, long *dead_flag)
 {
+	printf("in start_philosophing function, dead_flag memory address = %p\n", dead_flag);
 	if (philo->nb_philo == 1)
 	{
 		pthread_mutex_lock(&philo->print_mutex);
@@ -61,7 +62,7 @@ static int	start_philosophing(t_philo *philo)
 		pthread_mutex_unlock(&philo->print_mutex);
 		return (0);
 	}
-	if (init_threads(philo) == -1)
+	if (init_threads(philo, dead_flag) == -1)
 		return (-1);
 	return (0);
 }
@@ -98,7 +99,7 @@ int	main(int argc, char **argv)
 	forks = init_forks(philo);//to free once used
 	if (!philo || !forks)
 		return (2);
-	start_philosophing(philo);//=>init_threads
+	start_philosophing(philo, &dead_flag);//=>init_threads
 	destroy_forks(philo, forks);
 	free(philo);
 	free(forks);

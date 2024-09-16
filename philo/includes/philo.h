@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 11:59:17 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/16 12:56:44 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/16 18:39:21 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,6 @@ typedef struct philo
 	pthread_mutex_t	*left_fork;//at least one has to be a pointer
 	pthread_mutex_t	*right_fork;
 	pthread_mutex_t	print_mutex;
-	pthread_t		*observer;
-	pthread_mutex_t	*dead_flag_mutex;
-	long			*dead_flag;//0 if all philo are alive, 1 if one died
 }	t_philo;
 
 //utils_functions.c
@@ -56,7 +53,7 @@ void			precise_usleep(long usec);
 long			timestamp_in_ms(struct timeval start);
 
 //init.c
-t_philo			*init_philo_struct(char **argv, long *dead_flag);//to free
+t_philo			*init_philo_struct(char **argv);//to free
 int				init_threads(t_philo *philo);
 pthread_mutex_t	*init_forks(t_philo *philo);
 //void			print_philo(t_philo *philo);
@@ -64,7 +61,6 @@ pthread_mutex_t	*init_forks(t_philo *philo);
 //philo_routine.c
 void			*philo_routine(void *arg);
 void			*observer_routine(void *arg);
-int	check_all_philo_are_alive(t_philo *philo);
 
 //main.c
 //int	main(int argc, char **argv);

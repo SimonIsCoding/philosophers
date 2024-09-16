@@ -6,13 +6,13 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 12:04:40 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/16 12:57:40 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/16 18:39:43 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-t_philo	*init_philo_struct(char **argv, long *dead_flag)//to free once used
+t_philo	*init_philo_struct(char **argv)//to free once used
 {
 	int				philo_nb;
 	t_philo			*philo;
@@ -36,16 +36,10 @@ t_philo	*init_philo_struct(char **argv, long *dead_flag)//to free once used
 			philo[i].nb_must_eat = ft_atoi(argv[5]);
 		else
 			philo[i].nb_must_eat = -1;
-		*(philo[i].dead_flag) = dead_flag;
-		philo[i].dead_flag_mutex = malloc(sizeof(pthread_mutex_t));
-		pthread_mutex_init(philo[i].dead_flag_mutex, NULL);
 		gettimeofday(&start, NULL);
 		philo[i].start_living = start;
 		philo[i].time_last_meal = start;
 		philo[i].eating_times = 0;
-
-
-	//	philo[i].dead_flag = dead_flag;
 	}
 	return (philo);
 }
@@ -72,32 +66,21 @@ pthread_mutex_t	*init_forks(t_philo *philo)//to free once used
 //structure philo comme ca tu definies le mutex correspondant a la fourchette
 //droite et gauche pour chaque philo
 //it takes more ms to create an array of threads with malloc
-int	init_threads(t_philo *philo)//, long *dead_flag)
+int	init_threads(t_philo *philo)
 {
 	int			i;
 	pthread_t	*thread;
 
 	i = -1;
-//	printf("in init_threads function, dead_flag memory address = %p\n", dead_flag);
 	thread = malloc(sizeof(pthread_t) * philo->nb_philo);
-	philo->observer = malloc(sizeof(pthread_t));
 	if (!thread)
 		return (write(2, "Error malloc\n", 13), -1);
 	pthread_mutex_init(&philo->print_mutex, NULL);
-	if (check_all_philo_are_alive(philo) == 1)
-	{
-//		*dead_flag = 1;
-		
-	}
-	if (pthread_create(philo->observer, NULL, &observer_routine, &philo[0]) == -1)
-		return (-1);
 	while (++i < philo->nb_philo)
 	{
 		if (pthread_create(&thread[i], NULL, &philo_routine, &philo[i]) == -1)
 			return (-1);
 	}
-	if (pthread_join(*philo->observer, NULL) == -1)
-		return (-1);
 	i = -1;
 	while (++i < philo->nb_philo)
 	{

@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 13:58:52 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/16 18:38:45 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/17 19:46:48 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,9 @@ static void	eat(t_philo *philo)
 		timestamp_in_ms(philo->start_living), philo->thread_id);
 	printf("\033[1;38;5;93m%li %li is eating\033[0m\n",
 		timestamp_in_ms(philo->start_living), philo->thread_id);
-	precise_usleep(philo->time_to_eat * 1000);
 	gettimeofday(&reset, NULL);
 	philo->time_last_meal = reset;
+	precise_usleep(philo->time_to_eat * 1000);
 	philo->eating_times++;
 	pthread_mutex_unlock(philo->right_fork);
 	pthread_mutex_unlock(philo->left_fork);

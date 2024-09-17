@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 12:09:47 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/17 10:43:56 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/17 19:34:21 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,10 @@ static int	start_philosophing(t_philo *philo)
 {
 	if (philo->nb_philo == 1)
 	{
+		pthread_mutex_lock(philo->left_fork);
+		printf("\033[1;38;5;196m%li %li has taken a fork\033[0m\n",
+			timestamp_in_ms(philo->start_living), philo->thread_id);
+		pthread_mutex_unlock(philo->left_fork);
 		pthread_mutex_lock(&philo->print_mutex);
 		precise_usleep(philo->time_to_die * 1000);
 		printf("\033[1;38;5;214m%li %li is dead\033[0m\n",

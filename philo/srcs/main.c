@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 12:09:47 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/16 18:39:33 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/17 10:43:56 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ static int	start_philosophing(t_philo *philo)
 		pthread_mutex_unlock(&philo->print_mutex);
 		return (0);
 	}
+	init_threads(philo);
 	return (0);
 }
 

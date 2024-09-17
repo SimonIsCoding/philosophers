@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 11:59:17 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/16 18:39:21 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/17 11:38:37 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef struct philo
 	pthread_mutex_t	*left_fork;//at least one has to be a pointer
 	pthread_mutex_t	*right_fork;
 	pthread_mutex_t	print_mutex;
+	long			dead_flag;
 }	t_philo;
 
 //utils_functions.c
@@ -60,7 +61,6 @@ pthread_mutex_t	*init_forks(t_philo *philo);
 
 //philo_routine.c
 void			*philo_routine(void *arg);
-void			*observer_routine(void *arg);
 
 //main.c
 //int	main(int argc, char **argv);

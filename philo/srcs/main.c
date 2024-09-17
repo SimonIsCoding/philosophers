@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 12:09:47 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/17 19:34:21 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/17 20:45:10 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,8 @@ static int	destroy_forks(t_philo *philo, pthread_mutex_t *forks)
 		i++;
 	}
 	if (pthread_mutex_destroy(&philo->print_mutex) != 0)
+		return (-1);
+	if (pthread_mutex_destroy(&philo->dead_mutex) != 0)
 		return (-1);
 	return (0);
 }

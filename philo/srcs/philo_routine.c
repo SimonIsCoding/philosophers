@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 13:58:52 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/17 19:46:48 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/17 21:00:24 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,16 @@ static int	break_conditions(t_philo *philo)
 		return (1);
 	if (timestamp_in_ms(philo->time_last_meal) >= philo->time_to_die)
 	{
-		pthread_mutex_lock(&philo->print_mutex);
-		printf("\033[1;38;5;214m%li %li is dead\033[0m\n",
-			timestamp_in_ms(philo->start_living), philo->thread_id);
-		pthread_mutex_unlock(&philo->print_mutex);
+		if (philo->dead_flag == 0)
+		{
+			pthread_mutex_lock(&philo->print_mutex);
+			printf("\033[1;38;5;214m%li %li is dead\033[0m\n",
+				timestamp_in_ms(philo->start_living), philo->thread_id);
+			pthread_mutex_unlock(&philo->print_mutex);
+		}
+		pthread_mutex_lock(&philo->dead_mutex);
+		philo->dead_flag = 1;
+		pthread_mutex_unlock(&philo->dead_mutex);
 		return (1);
 	}
 	return (0);
@@ -91,17 +97,37 @@ static void	think(t_philo *philo)
 	}
 }
 
+int	check_one_dead_flag_activated(t_philo *philo)
+{
+	int	i;
+	
+	i = 0;
+	while (i < philo->nb_philo)
+	{
+		if (philo->dead_flag == 1)
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 void *philo_routine(void *arg)
 {
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	while(1)
+	if (check_one_dead_flag_activated(philo) == 1)
+		return (NULL);
+	while(break_conditions(philo) == 0)
 	{
 		if (break_conditions(philo) == 1)
 			break ;
 		eat(philo);
+		if (break_conditions(philo) == 1)
+			break ;
 		philo_sleep(philo);
+		if (break_conditions(philo) == 1)
+			break ;
 		think(philo);
 	}
 	return (NULL);

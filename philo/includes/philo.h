@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 11:59:17 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/17 11:38:37 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/17 21:00:40 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef struct philo
 	pthread_mutex_t	*left_fork;//at least one has to be a pointer
 	pthread_mutex_t	*right_fork;
 	pthread_mutex_t	print_mutex;
+	pthread_mutex_t	dead_mutex;
 	long			dead_flag;
 }	t_philo;
 
@@ -52,6 +53,7 @@ int				check_error(int argc, char **argv);
 //custom_usleep.c
 void			precise_usleep(long usec);
 long			timestamp_in_ms(struct timeval start);
+int				check_one_dead_flag_activated(t_philo *philo);
 
 //init.c
 t_philo			*init_philo_struct(char **argv);//to free

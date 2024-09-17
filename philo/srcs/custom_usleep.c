@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 12:23:51 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/15 19:47:00 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/17 21:00:35 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ long	timestamp_in_ms(struct timeval start)
 	elapsed_time_in_ms = (sec * 1000L) + (usec / 1000L);
 	return (elapsed_time_in_ms);
 }
+
 /*
 int	main(void)
 {

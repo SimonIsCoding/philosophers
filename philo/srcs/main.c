@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 12:09:47 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/17 20:45:10 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/17 21:19:23 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,10 +91,12 @@ int	main(int argc, char **argv)
 {
 	t_philo			*philo;
 	pthread_mutex_t	*forks;
+	long			dead_flag;
 
+	dead_flag = 42;
 	if (check_error(argc, argv) == 1)
 		return (1);
-	philo = init_philo_struct(argv);//to free once used
+	philo = init_philo_struct(argv, &dead_flag);//to free once used
 	forks = init_forks(philo);//to free once used
 	if (!philo || !forks)
 		return (2);

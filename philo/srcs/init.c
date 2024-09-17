@@ -6,20 +6,19 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 12:04:40 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/17 20:25:40 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/17 21:20:32 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-t_philo	*init_philo_struct(char **argv)//to free once used
+t_philo	*init_philo_struct(char **argv, long *dead_flag)//to free once used
 {
 	int				philo_nb;
 	t_philo			*philo;
 	struct timeval	start;
 	int				i;
 
-	//(void)dead_flag;
 	philo_nb = ft_atoi(argv[1]);
 	philo = malloc(sizeof(t_philo) * philo_nb);
 	if (!philo)
@@ -40,7 +39,12 @@ t_philo	*init_philo_struct(char **argv)//to free once used
 		philo[i].start_living = start;
 		philo[i].time_last_meal = start;
 		philo[i].eating_times = 0;
-		philo[i].dead_flag = 0;
+		printf("i = %i\n", i);
+		printf("dead_flag memory address = %p\n", dead_flag);
+		printf("dead_flag value = %li\n", *dead_flag);
+		printf("philo[i].dead_flag memory address = %ld\n", philo[i].dead_flag);
+		philo[i].dead_flag = *dead_flag;
+		printf("philo[i].dead_flag value = %li\n", philo[i].dead_flag);
 	}
 	return (philo);
 }

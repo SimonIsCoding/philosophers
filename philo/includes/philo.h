@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 11:59:17 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/17 21:00:40 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/17 21:11:11 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,8 @@ long			timestamp_in_ms(struct timeval start);
 int				check_one_dead_flag_activated(t_philo *philo);
 
 //init.c
-t_philo			*init_philo_struct(char **argv);//to free
+//t_philo			*init_philo_struct(char **argv);//to free
+t_philo	*init_philo_struct(char **argv, long *dead_flag);
 int				init_threads(t_philo *philo);
 pthread_mutex_t	*init_forks(t_philo *philo);
 //void			print_philo(t_philo *philo);

@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 13:58:52 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/17 21:00:24 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/17 21:17:46 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,12 @@ static int	break_conditions(t_philo *philo)
 		return (1);
 	if (timestamp_in_ms(philo->time_last_meal) >= philo->time_to_die)
 	{
-		if (philo->dead_flag == 0)
-		{
-			pthread_mutex_lock(&philo->print_mutex);
-			printf("\033[1;38;5;214m%li %li is dead\033[0m\n",
-				timestamp_in_ms(philo->start_living), philo->thread_id);
-			pthread_mutex_unlock(&philo->print_mutex);
-		}
+		pthread_mutex_lock(&philo->print_mutex);
+		printf("\033[1;38;5;214m%li %li is dead\033[0m\n",
+			timestamp_in_ms(philo->start_living), philo->thread_id);
+		pthread_mutex_unlock(&philo->print_mutex);
 		pthread_mutex_lock(&philo->dead_mutex);
-		philo->dead_flag = 1;
+		philo->dead_flag = 1L;
 		pthread_mutex_unlock(&philo->dead_mutex);
 		return (1);
 	}
@@ -104,7 +101,7 @@ int	check_one_dead_flag_activated(t_philo *philo)
 	i = 0;
 	while (i < philo->nb_philo)
 	{
-		if (philo->dead_flag == 1)
+		if (philo->dead_flag == 1L)
 			return (1);
 		i++;
 	}

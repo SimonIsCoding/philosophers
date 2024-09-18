@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 16:20:32 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/18 16:20:58 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/18 19:24:35 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	break_conditions(t_philo *philo)
 {
 	if (checking_death(philo) == 1)
 		return (1);
-	if (philo->nb_must_eat != -1 && philo->eating_times >= philo->nb_must_eat)
+	if (philo->nb_must_eat != -1 && philo->eating_times > philo->nb_must_eat)
 		return (1);
 	if (timestamp_in_ms(philo->time_last_meal) >= philo->time_to_die)
 	{

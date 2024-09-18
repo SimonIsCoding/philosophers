@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 12:09:47 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/18 15:31:57 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/18 19:10:41 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,20 +96,13 @@ int	main(int argc, char **argv)
 	if (check_error(argc, argv) == 1)
 		return (1);
 	watch.dead_flag = 42L;
-	philo = init_philo_struct(argv, &watch);//to free once used
-	forks = init_forks(philo);//to free once used
+	philo = init_philo_struct(argv, &watch);
+	forks = init_forks(philo);
 	if (!philo || !forks)
 		return (2);
-	start_philosophing(philo);//=>init_threads
+	start_philosophing(philo);
 	destroy_forks(philo, forks);
 	free(philo);
 	free(forks);
 	return (0);
 }
-
-	// printf("before starting philosophing\n");
-	// printf("before destroying the forks\n");
-	// printf("after destroying the forks\n");
-	// 	return (3);
-		// return (4);
-

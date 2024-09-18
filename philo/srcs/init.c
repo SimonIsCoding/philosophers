@@ -6,20 +6,29 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 12:04:40 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/18 16:06:59 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/18 19:08:06 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-t_philo	*init_philo_struct(char **argv, t_big *watch)//to free once used
+//I had to cut this funciton in 2 because it was more than 25 lines.
+static void	init_philo_struct_bis(char **argv, int i, t_philo *philo,
+			int philo_nb)
+{
+	philo[i].nb_philo = philo_nb;
+	philo[i].time_to_die = ft_atoi(argv[2]);
+	philo[i].time_to_eat = ft_atoi(argv[3]);
+	philo[i].time_to_sleep = ft_atoi(argv[4]);
+}
+
+t_philo	*init_philo_struct(char **argv, t_big *watch)
 {
 	int				philo_nb;
 	t_philo			*philo;
 	struct timeval	start;
 	int				i;
 
-	
 	philo_nb = ft_atoi(argv[1]);
 	philo = malloc(sizeof(t_philo) * philo_nb);
 	if (!philo)
@@ -27,11 +36,8 @@ t_philo	*init_philo_struct(char **argv, t_big *watch)//to free once used
 	i = -1;
 	while (++i < philo_nb)
 	{
+		init_philo_struct_bis(argv, i, philo, philo_nb);
 		philo[i].thread_id = i + 1;
-		philo[i].nb_philo = philo_nb;
-		philo[i].time_to_die = ft_atoi(argv[2]);
-		philo[i].time_to_eat = ft_atoi(argv[3]);
-		philo[i].time_to_sleep = ft_atoi(argv[4]);
 		if (argv[5])
 			philo[i].nb_must_eat = ft_atoi(argv[5]);
 		else
@@ -41,15 +47,11 @@ t_philo	*init_philo_struct(char **argv, t_big *watch)//to free once used
 		philo[i].time_last_meal = start;
 		philo[i].eating_times = 0;
 		philo[i].watcher = watch;
-//		printf("i = %i\n", i);
-//		philo[i].dead_flag = dead_flag;
-//		printf("philo[i].dead_flag memory address = %p\n", (void *)philo[i].dead_flag);
-//		printf("philo[i].dead_flag value = %li\n", *philo[i].dead_flag);
 	}
 	return (philo);
 }
 
-pthread_mutex_t	*init_forks(t_philo *philo)//to free once used
+pthread_mutex_t	*init_forks(t_philo *philo)
 {
 	pthread_mutex_t	*forks;
 	int				i;

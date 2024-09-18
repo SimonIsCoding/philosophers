@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 11:59:17 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/18 15:32:03 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/18 16:21:39 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ typedef struct philo
 	struct timeval	start_living;
 	struct timeval	time_last_meal;
 	long			timestamp_in_ms;
-	pthread_mutex_t	*left_fork;//at least one has to be a pointer
+	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
 	pthread_mutex_t	print_mutex;
 	t_big			*watcher;
@@ -58,18 +58,19 @@ int				check_error(int argc, char **argv);
 //custom_usleep.c
 void			precise_usleep(long usec);
 long			timestamp_in_ms(struct timeval start);
-int				check_one_dead_flag_activated(t_philo *philo);
 
 //init.c
-//t_philo			*init_philo_struct(char **argv);//to free
-//t_philo	*init_philo_struct(char **argv, long *dead_flag);
-t_philo	*init_philo_struct(char **argv, t_big *watch);
+t_philo			*init_philo_struct(char **argv, t_big *watch);
 int				init_threads(t_philo *philo);
 pthread_mutex_t	*init_forks(t_philo *philo);
 //void			print_philo(t_philo *philo);
 
 //philo_routine.c
 void			*philo_routine(void *arg);
+
+//philo_routine_breaker.c
+int				checking_death(t_philo *philo);
+int				break_conditions(t_philo *philo);
 
 //main.c
 //int	main(int argc, char **argv);

@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 11:59:17 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/18 16:21:39 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/18 19:29:10 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,6 @@ int				checking_death(t_philo *philo);
 int				break_conditions(t_philo *philo);
 
 //main.c
-//int	main(int argc, char **argv);
+//int			main(int argc, char **argv);
 
 #endif

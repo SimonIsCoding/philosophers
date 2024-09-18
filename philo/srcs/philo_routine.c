@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 13:58:52 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/18 16:20:53 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/18 19:41:11 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ void	*philo_routine(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	while (checking_death(philo) == 0)
+	while (break_conditions(philo) == 0)
 	{
 		eat(philo);
 		if (break_conditions(philo) == 1)

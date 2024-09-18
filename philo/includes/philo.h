@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 11:59:17 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/17 21:11:11 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/18 15:32:03 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,12 @@
 
 # define ERROR_MSG		"$>./philo number_of_philosophers time_to_die\
  time_to_eat time_to_sleep [number_of_times_each_philosopher_must_eat]\n"
+
+typedef struct big_brother_is_watching_u
+{
+	pthread_mutex_t	dead_mutex;
+	long			dead_flag;
+}	t_big;
 
 typedef struct philo
 {
@@ -37,8 +43,7 @@ typedef struct philo
 	pthread_mutex_t	*left_fork;//at least one has to be a pointer
 	pthread_mutex_t	*right_fork;
 	pthread_mutex_t	print_mutex;
-	pthread_mutex_t	dead_mutex;
-	long			dead_flag;
+	t_big			*watcher;
 }	t_philo;
 
 //utils_functions.c
@@ -57,7 +62,8 @@ int				check_one_dead_flag_activated(t_philo *philo);
 
 //init.c
 //t_philo			*init_philo_struct(char **argv);//to free
-t_philo	*init_philo_struct(char **argv, long *dead_flag);
+//t_philo	*init_philo_struct(char **argv, long *dead_flag);
+t_philo	*init_philo_struct(char **argv, t_big *watch);
 int				init_threads(t_philo *philo);
 pthread_mutex_t	*init_forks(t_philo *philo);
 //void			print_philo(t_philo *philo);

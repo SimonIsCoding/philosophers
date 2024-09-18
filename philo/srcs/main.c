@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 12:09:47 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/17 21:19:23 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/18 15:31:57 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ static int	destroy_forks(t_philo *philo, pthread_mutex_t *forks)
 	}
 	if (pthread_mutex_destroy(&philo->print_mutex) != 0)
 		return (-1);
-	if (pthread_mutex_destroy(&philo->dead_mutex) != 0)
+	if (pthread_mutex_destroy(&philo->watcher->dead_mutex) != 0)
 		return (-1);
 	return (0);
 }
@@ -91,12 +91,12 @@ int	main(int argc, char **argv)
 {
 	t_philo			*philo;
 	pthread_mutex_t	*forks;
-	long			dead_flag;
+	t_big			watch;
 
-	dead_flag = 42;
 	if (check_error(argc, argv) == 1)
 		return (1);
-	philo = init_philo_struct(argv, &dead_flag);//to free once used
+	watch.dead_flag = 42L;
+	philo = init_philo_struct(argv, &watch);//to free once used
 	forks = init_forks(philo);//to free once used
 	if (!philo || !forks)
 		return (2);

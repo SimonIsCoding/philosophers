@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 16:20:32 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/18 19:24:35 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/19 20:19:55 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 int	checking_death(t_philo *philo)
 {
+	printf("philo->thread_id = %li\n", philo->thread_id);
+	printf("philo->watcher->dead_flag = %p\n", &philo->watcher->dead_flag);
 	pthread_mutex_lock(&philo->watcher->dead_mutex);
 	if (philo->watcher->dead_flag == 1)
 	{

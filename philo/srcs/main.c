@@ -6,49 +6,49 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 12:09:47 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/18 19:10:41 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/20 17:06:23 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-// try to execute this example: ./philo 2 500 200 200
-// The result should be:
-/*
-0 1 has taken a fork
-0 1 has taken a fork
-0 1 is eating
-200 1 is sleeping
-200 2 has taken a fork
-200 2 has taken a fork
-200 2 is eating
-400 1 is thinking
-400 2 is sleeping
-400 1 has taken a fork
-400 1 has taken a fork
-400 1 is eating
-600 1 is sleeping
-600 2 is thinking
-600 2 has taken a fork
-600 2 has taken a fork
-600 2 is eating
-800 1 is thinking
-800 2 is sleeping
-800 1 has taken a fork
-800 1 has taken a fork
-800 1 is eating
-1000 2 is thinking
-1000 2 has taken a fork
-1000 2 has taken a fork
-1000 2 is eating
-1000 1 is sleeping
-1200 1 is thinking
-1200 2 is sleeping
-1200 1 has taken a fork
-1200 1 has taken a fork
-1200 1 is eating
-...
-*/
+void	check_states(t_philo *philo, t_states philo_state)
+{
+	if (philo_state == FORK)
+	{
+		printf("\033[1;38;5;196m%li %li has taken a fork\033[0m\n",
+			timestamp_in_ms(philo->start_living), philo->thread_id);
+	}
+	else if (philo_state == EAT)
+	{
+		printf("\033[1;38;5;93m%li %li is eating\033[0m\n",
+			timestamp_in_ms(philo->start_living), philo->thread_id);
+	}
+	else if (philo_state == SLEEP)
+	{
+		printf("\033[1;38;5;46m%li %li is sleeping\033[0m\n",
+			timestamp_in_ms(philo->start_living), philo->thread_id);
+	}
+	else if (philo_state == THINK)
+	{
+		printf("\033[1;38;5;21m%li %li is thinking\033[0m\n",
+			timestamp_in_ms(philo->start_living), philo->thread_id);
+	}
+}
+
+void	print(t_philo *philo, t_states philo_state)
+{
+	pthread_mutex_lock(&philo->watcher->dead_mutex);
+	if (philo->watcher->dead_flag == 1)
+	{
+		pthread_mutex_unlock(&philo->watcher->dead_mutex);
+		return ;
+	}
+	pthread_mutex_lock(&philo->print_mutex);
+	check_states(philo, philo_state);
+	pthread_mutex_unlock(&philo->watcher->dead_mutex);
+	pthread_mutex_unlock(&philo->print_mutex);
+}
 
 static int	start_philosophing(t_philo *philo)
 {

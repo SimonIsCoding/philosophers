@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 11:59:17 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/20 13:24:34 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/20 17:02:17 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ typedef enum states
 	SLEEP,
 	THINK,
 	DEAD
-} t_states;
+}	t_states;
 
 typedef struct big_brother_is_watching_u
 {
@@ -80,10 +80,9 @@ void			*philo_routine(void *arg);
 //philo_routine_breaker.c
 int				checking_death(t_philo *philo);
 int				break_conditions(t_philo *philo);
-void			print(t_philo *philo, t_states philo_state);
-
 
 //main.c
+void			print(t_philo *philo, t_states philo_state);
 //int			main(int argc, char **argv);
 
 #endif

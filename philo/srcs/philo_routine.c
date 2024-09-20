@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 13:58:52 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/18 19:41:11 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/20 14:20:34 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,31 +33,23 @@ static void	eat(t_philo *philo)
 	if (checking_death(philo) == 1)
 		return ;
 	pick_correct_fork(philo);
-	pthread_mutex_lock(&philo->print_mutex);
-	printf("\033[1;38;5;196m%li %li has taken a fork\033[0m\n",
-		timestamp_in_ms(philo->start_living), philo->thread_id);
-	printf("\033[1;38;5;196m%li %li has taken a fork\033[0m\n",
-		timestamp_in_ms(philo->start_living), philo->thread_id);
-	printf("\033[1;38;5;93m%li %li is eating\033[0m\n",
-		timestamp_in_ms(philo->start_living), philo->thread_id);
+	print(philo, FORK);
+	print(philo, FORK);
+	print(philo, EAT);
 	gettimeofday(&reset, NULL);
 	philo->time_last_meal = reset;
 	precise_usleep(philo->time_to_eat * 1000);
 	philo->eating_times++;
 	pthread_mutex_unlock(philo->right_fork);
 	pthread_mutex_unlock(philo->left_fork);
-	pthread_mutex_unlock(&philo->print_mutex);
 }
 
 static void	philo_sleep(t_philo *philo)
 {
 	if (checking_death(philo) == 1)
 		return ;
-	pthread_mutex_lock(&philo->print_mutex);
-	printf("\033[1;38;5;46m%li %li is sleeping\033[0m\n",
-		timestamp_in_ms(philo->start_living), philo->thread_id);
+	print(philo, SLEEP);
 	precise_usleep(philo->time_to_sleep * 1000);
-	pthread_mutex_unlock(&philo->print_mutex);
 }
 
 static void	think(t_philo *philo)
@@ -66,19 +58,13 @@ static void	think(t_philo *philo)
 		return ;
 	if (philo->nb_philo % 2 == 0 && philo->time_to_eat > philo->time_to_sleep)
 	{
-		pthread_mutex_lock(&philo->print_mutex);
-		printf("\033[1;38;5;21m%li %li is thinking\033[0m\n",
-			timestamp_in_ms(philo->start_living), philo->thread_id);
+		print(philo, THINK);
 		precise_usleep((philo->time_to_eat - philo->time_to_sleep) * 1000);
-		pthread_mutex_unlock(&philo->print_mutex);
 	}
 	if (philo->nb_philo % 2 == 1)
 	{
-		pthread_mutex_lock(&philo->print_mutex);
-		printf("\033[1;38;5;21m%li %li is thinking\033[0m\n",
-			timestamp_in_ms(philo->start_living), philo->thread_id);
+		print(philo, THINK);
 		precise_usleep((philo->time_to_eat * 2 - philo->time_to_sleep) * 1000);
-		pthread_mutex_unlock(&philo->print_mutex);
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 12:04:40 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/19 20:19:41 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/20 14:18:45 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,6 @@ t_philo	*init_philo_struct(char **argv, t_big *watch)
 		philo[i].time_last_meal = start;
 		philo[i].eating_times = 0;
 		philo[i].watcher = watch;
-	printf("philo->thread_id = %li\n", philo->thread_id);
-	printf("philo->watcher->dead_flag = %p\n", &philo->watcher->dead_flag);
-
 	}
 	return (philo);
 }

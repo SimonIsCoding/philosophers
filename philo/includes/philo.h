@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 11:59:17 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/23 15:24:49 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/23 15:31:47 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,10 +89,10 @@ void			print(t_philo *philo, t_states philo_state);
 void			ft_putnbr(int nb);
 
 //write_msg.c
-void	write_taken_fork_msg(t_philo *philo);
-void	write_eat_msg(t_philo *philo);
-void	write_sleep_msg(t_philo *philo);
-void	write_think_msg(t_philo *philo);
-void	write_dead_msg(t_philo *philo);
+void			write_taken_fork_msg(t_philo *philo);
+void			write_eat_msg(t_philo *philo);
+void			write_sleep_msg(t_philo *philo);
+void			write_think_msg(t_philo *philo);
+void			write_dead_msg(t_philo *philo);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 12:09:47 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/23 15:27:56 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/23 15:31:10 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,29 +15,13 @@
 void	check_states(t_philo *philo, t_states philo_state)
 {
 	if (philo_state == FORK)
-	{
 		write_taken_fork_msg(philo);
-		// printf("\033[1;38;5;196m%li %li has taken a fork\033[0m\n",
-		// 	timestamp_in_ms(philo->start_living), philo->thread_id);
-	}
 	else if (philo_state == EAT)
-	{
 		write_eat_msg(philo);
-		// printf("\033[1;38;5;93m%li %li is eating\033[0m\n",
-		// 	timestamp_in_ms(philo->start_living), philo->thread_id);
-	}
 	else if (philo_state == SLEEP)
-	{
 		write_sleep_msg(philo);
-		// printf("\033[1;38;5;46m%li %li is sleeping\033[0m\n",
-		// 	timestamp_in_ms(philo->start_living), philo->thread_id);
-	}
 	else if (philo_state == THINK)
-	{
 		write_think_msg(philo);
-//		printf("\033[1;38;5;21m%li %li is thinking\033[0m\n",
-//			timestamp_in_ms(philo->start_living), philo->thread_id);
-	}
 }
 
 void	print(t_philo *philo, t_states philo_state)
@@ -59,14 +43,11 @@ static int	start_philosophing(t_philo *philo)
 	if (philo->nb_philo == 1)
 	{
 		pthread_mutex_lock(philo->left_fork);
-		printf("\033[1;38;5;196m%li %li has taken a fork\033[0m\n",
-			timestamp_in_ms(philo->start_living), philo->thread_id);
+		write_taken_fork_msg(philo);
 		pthread_mutex_unlock(philo->left_fork);
 		pthread_mutex_lock(&philo->print_mutex);
 		precise_usleep(philo->time_to_die * 1000);
 		write_dead_msg(philo);
-		// printf("\033[1;38;5;214m%li %li is dead\033[0m\n",
-		// 	timestamp_in_ms(philo->start_living), philo->thread_id);
 		pthread_mutex_unlock(&philo->print_mutex);
 		return (0);
 	}

@@ -6,7 +6,7 @@
 #    By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/01 15:18:01 by simarcha          #+#    #+#              #
-#    Updated: 2024/09/22 20:22:32 by simarcha         ###   ########.fr        #
+#    Updated: 2024/09/23 15:24:19 by simarcha         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,9 @@ SRCS_FILES			= main.c \
 					custom_usleep.c \
 					init.c \
 					philo_routine.c \
-					philo_routine_breaker.c
+					philo_routine_breaker.c \
+					ft_putnbr.c \
+					write_msg.c
 SRCS				= $(addprefix $(SRCS_DIR), $(SRCS_FILES))
 
 #OBJ Files - All .c files transformed in .o files

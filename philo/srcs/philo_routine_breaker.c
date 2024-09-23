@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 16:20:32 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/20 17:01:42 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/23 15:27:30 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	break_conditions(t_philo *philo)
 {
 	if (checking_death(philo) == 1)
 		return (1);
-	if (philo->nb_must_eat != -1 && philo->eating_times > philo->nb_must_eat)
+	if (philo->nb_must_eat != -1 && philo->eating_times >= philo->nb_must_eat)
 		return (1);
 	if (timestamp_in_ms(philo->time_last_meal) >= philo->time_to_die)
 	{
@@ -36,8 +36,9 @@ int	break_conditions(t_philo *philo)
 		philo->watcher->dead_flag = 1L;
 		pthread_mutex_unlock(&philo->watcher->dead_mutex);
 		pthread_mutex_lock(&philo->print_mutex);
-		printf("\033[1;38;5;214m%li %li is dead\033[0m\n",
-			timestamp_in_ms(philo->start_living), philo->thread_id);
+		write_dead_msg(philo);
+		// printf("\033[1;38;5;214m%li %li is dead\033[0m\n",
+		// 	timestamp_in_ms(philo->start_living), philo->thread_id);
 		pthread_mutex_unlock(&philo->print_mutex);
 		return (1);
 	}

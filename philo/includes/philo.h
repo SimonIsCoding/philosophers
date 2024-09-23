@@ -6,9 +6,13 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 11:59:17 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/23 15:31:47 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/23 19:44:29 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+//During the compilation, it might have a small delay of 1ms for every philos
+//while they are doing they're actions.
+//The more philos there are, the more delay will increase
 
 #ifndef PHILO_H
 # define PHILO_H
@@ -31,12 +35,28 @@ typedef enum states
 	DEAD
 }	t_states;
 
+//The long variable is only to check if one philo is dead
+//If yes, we change his value to 1 and everything is stopped.
+//We need  mutex to change the value of this long variable. In that case, 
+//only one philo would be able to change the value. And it will be changed once
+//I couldn't put this structure in the t_philo struct because I wanted only one
+//variable dead_flag. And not nb_philo's times dead_flag.
 typedef struct big_brother_is_watching_u
 {
 	pthread_mutex_t	dead_mutex;
 	long			dead_flag;
 }	t_big;
 
+
+//This is my main structure that contains everything. We put inside all the 
+//argv that the user inputs
+//We start counting in ms the life of our philo thanks to start_living variable
+//And given that this is a struct timeval type, I used timestamp_in_ms to 
+//convert it in ms
+//We need a pointer for both forks to know where are the forks for each 
+//philosophers
+//And I also a muntex to print everything, otherwise I would have a lot of lines
+//mixed together.
 typedef struct philo
 {
 	long			thread_id;
@@ -64,6 +84,16 @@ int				ft_atoi(const char *str);
 //parsing.c
 int				check_error(int argc, char **argv);
 
+//ft_putnbr.c
+void			ft_putnbr(int nb);
+
+//write_msg.c
+void			write_taken_fork_msg(t_philo *philo);
+void			write_eat_msg(t_philo *philo);
+void			write_sleep_msg(t_philo *philo);
+void			write_think_msg(t_philo *philo);
+void			write_dead_msg(t_philo *philo);
+
 //custom_usleep.c
 void			precise_usleep(long usec);
 long			timestamp_in_ms(struct timeval start);
@@ -84,15 +114,5 @@ int				break_conditions(t_philo *philo);
 //main.c
 void			print(t_philo *philo, t_states philo_state);
 //int			main(int argc, char **argv);
-
-//ft_putnbr.c
-void			ft_putnbr(int nb);
-
-//write_msg.c
-void			write_taken_fork_msg(t_philo *philo);
-void			write_eat_msg(t_philo *philo);
-void			write_sleep_msg(t_philo *philo);
-void			write_think_msg(t_philo *philo);
-void			write_dead_msg(t_philo *philo);
 
 #endif

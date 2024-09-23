@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 12:09:47 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/23 15:31:10 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/23 19:37:35 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int	main(int argc, char **argv)
 
 	if (check_error(argc, argv) == 1)
 		return (1);
-	watch.dead_flag = 42L;
+	watch.dead_flag = 0L;
 	philo = init_philo_struct(argv, &watch);
 	forks = init_forks(philo);
 	if (!philo || !forks)

@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 11:59:17 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/23 19:44:29 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/24 15:01:19 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ typedef struct big_brother_is_watching_u
 	pthread_mutex_t	dead_mutex;
 	long			dead_flag;
 }	t_big;
-
 
 //This is my main structure that contains everything. We put inside all the 
 //argv that the user inputs

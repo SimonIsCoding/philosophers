@@ -6,12 +6,13 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 12:09:47 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/23 19:37:35 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/24 15:05:43 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
+//this function let us write the line for every philo's state
 void	check_states(t_philo *philo, t_states philo_state)
 {
 	if (philo_state == FORK)
@@ -24,6 +25,8 @@ void	check_states(t_philo *philo, t_states philo_state)
 		write_think_msg(philo);
 }
 
+//we have to use the mutex to print every messages
+//Otherwise the messages displayed would not be mixed up with other messages
 void	print(t_philo *philo, t_states philo_state)
 {
 	pthread_mutex_lock(&philo->watcher->dead_mutex);
@@ -38,23 +41,28 @@ void	print(t_philo *philo, t_states philo_state)
 	pthread_mutex_unlock(&philo->print_mutex);
 }
 
+//If there is 1 philo, there is one fork. In that case this philo won't be 
+//able to eat because he need two forks. I could have use a mutex for the fork
+//But I know that I will just print the messages, with the time_to_die delay
+//The messages printed can not be mixed up thanks to this delay. 
+//And I don't really need the use of a mutex.
+//If there is more than 1 philo, we enter in init_threads to create every
+//threads and enter in the routine
 static int	start_philosophing(t_philo *philo)
 {
 	if (philo->nb_philo == 1)
 	{
-		pthread_mutex_lock(philo->left_fork);
 		write_taken_fork_msg(philo);
-		pthread_mutex_unlock(philo->left_fork);
-		pthread_mutex_lock(&philo->print_mutex);
 		precise_usleep(philo->time_to_die * 1000);
 		write_dead_msg(philo);
-		pthread_mutex_unlock(&philo->print_mutex);
 		return (0);
 	}
 	init_threads(philo);
 	return (0);
 }
 
+//This function is used to destroy all the mutex that we have before going out
+//of the programm
 static int	destroy_forks(t_philo *philo, pthread_mutex_t *forks)
 {
 	int	i;
@@ -73,6 +81,9 @@ static int	destroy_forks(t_philo *philo, pthread_mutex_t *forks)
 	return (0);
 }
 
+//Very important:
+//When we exit from the program, every malloc has to be freed, every mutex has
+//to be unlocked and destroyed and every threads has to be destroyed as well
 int	main(int argc, char **argv)
 {
 	t_philo			*philo;

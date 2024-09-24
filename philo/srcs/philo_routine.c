@@ -6,12 +6,17 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 13:58:52 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/20 14:20:34 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/24 14:59:29 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
+//Here we want to pick the forks in the same order to avoid data races
+//For this we compare the memory adresses for each forks
+//Given that every pointer are unsigned int (type uintptr_t) we can use this (<)
+//operator to select which one we use first. And every philos will follow this
+//strict way to choose their forks to avoid data races.
 static void	pick_correct_fork(t_philo *philo)
 {
 	if (philo->left_fork < philo->right_fork)
@@ -26,6 +31,12 @@ static void	pick_correct_fork(t_philo *philo)
 	}
 }
 
+//To eat, all the philos need 2 forks (left & right), picking them in the exact
+//strict order. Otherwise we will have data races. When a philo, starts to pick
+//a fork we directly lock the second one to avoid two philos beside each other
+//to pick only one fork.
+//If they pick only one fork, they  will not be abe to eat (because they need 2)
+//When the philos starts to eat, we reset their time of life (=time_to_die) to 0
 static void	eat(t_philo *philo)
 {
 	struct timeval	reset;
@@ -52,6 +63,11 @@ static void	philo_sleep(t_philo *philo)
 	precise_usleep(philo->time_to_sleep * 1000);
 }
 
+//To create the routine, the philo has to think a special amount of time to make
+//them all do the routine without breaking it. Depending on the input the user
+//writes, each philo will think a certain time, or not.
+//It is not mandatory to think. For some inputs, the philosophers can only
+//eat && sleep in the routine without dying.
 static void	think(t_philo *philo)
 {
 	if (checking_death(philo) == 1)
@@ -68,6 +84,16 @@ static void	think(t_philo *philo)
 	}
 }
 
+//In the function pthread_create, we pass as the fourth argument our &philo[i]
+//but the function philo_routine has a strict prototype which is:
+//void	*routine(void *arg)
+//It means that the pointer of &philo[i] is now in arg
+//Then we create the t_philo type variable to be able to cast our arg in philo
+//and receive all the information that we had in the array of philo[i]
+//For each actions we need to check if every philo are alive, otherwise we will
+//display a msg saying that one pphilo is dead, and another one will continue 
+//to sleep or think
+//If no philo dies and there is no limit of meals, the while loop is infinite
 void	*philo_routine(void *arg)
 {
 	t_philo	*philo;

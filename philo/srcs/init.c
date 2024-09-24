@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 12:04:40 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/20 14:18:45 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/24 15:01:35 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,10 @@ t_philo	*init_philo_struct(char **argv, t_big *watch)
 	return (philo);
 }
 
+//Once we initialize the mutex, we have to put it in the philo structure.
+//in that way we can each mutex for each forks (the right and the left) for 
+//every philo
+//it takes more ms to create an array of threads with malloc
 pthread_mutex_t	*init_forks(t_philo *philo)
 {
 	pthread_mutex_t	*forks;
@@ -69,10 +73,12 @@ pthread_mutex_t	*init_forks(t_philo *philo)
 	return (forks);
 }
 
-//une fois que tu initialises le mutex, il faut que tu le mettes dans ta 
-//structure philo comme ca tu definies le mutex correspondant a la fourchette
-//droite et gauche pour chaque philo
-//it takes more ms to create an array of threads with malloc
+//After initialized every mutex, we have to initialized every threads.
+//While they are creating them, each thread will go in the routine
+//(= philo_routine), passing the pointer philo[i].
+//Once the routine is done (every philo has eating the right amount of time),
+//or something went wrong (one philo died), we go out from this routine
+//and then destroy every thread, thanks to pthread_join
 int	init_threads(t_philo *philo)
 {
 	int			i;

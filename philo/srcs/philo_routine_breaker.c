@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 16:20:32 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/23 15:30:28 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/24 14:35:40 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,12 @@ int	checking_death(t_philo *philo)
 	return (0);
 }
 
+//If one philo is dead, we return 1 to break the philo_routine function
+//If every philo has eaten the good amount of time, we go out of the routine
+//If one philo is about to die, we change the value of our flag and we go out
+//of the routine function
+//Otherwise, everthing is good and we return 0, meaning that we continue
+//the philo_routine
 int	break_conditions(t_philo *philo)
 {
 	if (checking_death(philo) == 1)

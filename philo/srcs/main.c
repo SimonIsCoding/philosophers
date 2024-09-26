@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 12:09:47 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/24 15:05:43 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/26 19:08:19 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static int	start_philosophing(t_philo *philo)
 	if (philo->nb_philo == 1)
 	{
 		write_taken_fork_msg(philo);
-		precise_usleep(philo->time_to_die * 1000);
+		precise_usleep(philo->time_to_die * 1000, philo);
 		write_dead_msg(philo);
 		return (0);
 	}

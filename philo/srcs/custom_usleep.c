@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 12:23:51 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/17 21:00:35 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/26 19:11:00 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static long	get_elapsed_time_microseconds(struct timeval start,
 		+ (end.tv_usec - start.tv_usec));
 }
 
-void	precise_usleep(long microsecond)
+void	precise_usleep(long microsecond, t_philo *philo)
 {
 	struct timeval	start;
 	struct timeval	current;
@@ -34,6 +34,10 @@ void	precise_usleep(long microsecond)
 		usleep(rem / 2);
 	while (elapsed < microsecond)
 	{
+		//you have to check break conditions here
+		if (break_conditions(philo) == 1)
+			return ;
+		//=> because if one philo is dying here, you should be able to return it now
 		gettimeofday(&current, NULL);
 		elapsed = get_elapsed_time_microseconds(start, current);
 		rem = microsecond - elapsed;

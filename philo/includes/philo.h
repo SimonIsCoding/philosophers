@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 11:59:17 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/24 15:01:19 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/26 18:38:18 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,8 @@ void			write_think_msg(t_philo *philo);
 void			write_dead_msg(t_philo *philo);
 
 //custom_usleep.c
-void			precise_usleep(long usec);
+//void			precise_usleep(long usec);
+void	precise_usleep(long microsecond, t_philo *philo);
 long			timestamp_in_ms(struct timeval start);
 
 //init.c

@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 13:58:52 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/24 14:59:29 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/26 19:08:41 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static void	eat(t_philo *philo)
 	print(philo, EAT);
 	gettimeofday(&reset, NULL);
 	philo->time_last_meal = reset;
-	precise_usleep(philo->time_to_eat * 1000);
+	precise_usleep(philo->time_to_eat * 1000, philo);
 	philo->eating_times++;
 	pthread_mutex_unlock(philo->right_fork);
 	pthread_mutex_unlock(philo->left_fork);
@@ -57,10 +57,10 @@ static void	eat(t_philo *philo)
 
 static void	philo_sleep(t_philo *philo)
 {
-	if (checking_death(philo) == 1)
+	if (break_conditions(philo) == 1)
 		return ;
 	print(philo, SLEEP);
-	precise_usleep(philo->time_to_sleep * 1000);
+	precise_usleep(philo->time_to_sleep * 1000, philo);
 }
 
 //To create the routine, the philo has to think a special amount of time to make
@@ -75,12 +75,12 @@ static void	think(t_philo *philo)
 	if (philo->nb_philo % 2 == 0 && philo->time_to_eat > philo->time_to_sleep)
 	{
 		print(philo, THINK);
-		precise_usleep((philo->time_to_eat - philo->time_to_sleep) * 1000);
+		precise_usleep((philo->time_to_eat - philo->time_to_sleep) * 1000, philo);
 	}
 	if (philo->nb_philo % 2 == 1)
 	{
 		print(philo, THINK);
-		precise_usleep((philo->time_to_eat * 2 - philo->time_to_sleep) * 1000);
+		precise_usleep((philo->time_to_eat * 2 - philo->time_to_sleep) * 1000, philo);
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 13:58:52 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/26 19:08:41 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/26 19:12:45 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static void	eat(t_philo *philo)
 {
 	struct timeval	reset;
 
-	if (checking_death(philo) == 1)
+	if (break_conditions(philo) == 1)
 		return ;
 	pick_correct_fork(philo);
 	print(philo, FORK);

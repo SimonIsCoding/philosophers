@@ -6,7 +6,7 @@
 /*   By: simarcha <simarcha@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 12:04:40 by simarcha          #+#    #+#             */
-/*   Updated: 2024/09/24 15:01:35 by simarcha         ###   ########.fr       */
+/*   Updated: 2024/09/26 19:13:54 by simarcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ t_philo	*init_philo_struct(char **argv, t_big *watch)
 	if (!philo)
 		return (write(2, "Error malloc", 13), NULL);
 	i = -1;
+	gettimeofday(&start, NULL);
 	while (++i < philo_nb)
 	{
 		init_philo_struct_bis(argv, i, philo, philo_nb);
@@ -42,7 +43,6 @@ t_philo	*init_philo_struct(char **argv, t_big *watch)
 			philo[i].nb_must_eat = ft_atoi(argv[5]);
 		else
 			philo[i].nb_must_eat = -1;
-		gettimeofday(&start, NULL);
 		philo[i].start_living = start;
 		philo[i].time_last_meal = start;
 		philo[i].eating_times = 0;

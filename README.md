@@ -10,22 +10,6 @@ The Dining Philosophers Problem is a classic computer science problem that illus
 
 Imagine a round table with **N philosophers** sitting around it. Between each pair of philosophers, there is exactly **one fork**. Philosophers alternate between **thinking** and **eating**. To eat, a philosopher needs **two forks** (the one to their left and the one to their right).
 
-```
-        Philosopher 1
-           /    \
-    Fork 1        Fork 2
-   /                  \
-Philosopher 5    Philosopher 2
-   \                  /
-    Fork 5        Fork 3
-           \    /
-        Philosopher 4
-           /    \
-    Fork 4        Fork 4
-           \    /
-        Philosopher 3
-```
-
 ### The Challenge
 
 The problem arises when all philosophers try to eat simultaneously:
